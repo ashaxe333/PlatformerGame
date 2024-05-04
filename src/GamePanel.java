@@ -12,13 +12,12 @@ public class GamePanel extends JPanel implements Runnable{
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 
     static final int UNIT_SIZE = 20;
-    static int x;
-    static int y;
-    static boolean lastCharacter = true;
+    static int x = 100;
+    static int y = 100;
+    static boolean lastCharacter = false;
     private Thread gameThread;
     private Image image;
     private Graphics graphics;
-    private Random random;
     private Cube cube;
     private Ball ball;
 
@@ -37,21 +36,20 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void start(){
-        newCube(100, 100);
+        newCube(x, y);
+        newBall(x, y);
         System.out.println(cube.getX() + ", " + cube.getY());
-        lastCharacter = true;
     }
 
     public void newCube(int x, int y){
         cube = new Cube(x, y);
-        lastCharacter = true;
     }
 
 
     public void newBall(int x, int y){
         ball = new Ball(x, y);
-        lastCharacter = false;
     }
+
 
     /*
     public boolean switchCharakter(){
@@ -60,10 +58,9 @@ public class GamePanel extends JPanel implements Runnable{
         }else {
             newCube(x, y);
         }
+        return lastCharacter;
     }
-
-     */
-
+    */
 
     public void paint(Graphics g){
         image = createImage(getWidth(), getHeight());
@@ -93,7 +90,7 @@ public class GamePanel extends JPanel implements Runnable{
             g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, GAME_HEIGHT);
         }
 
-        random = new Random();
+        Random random = new Random();
         Graphics2D g2D = (Graphics2D)g;
         for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
             g2D.setColor(new Color(40, 160, 0));
@@ -125,15 +122,29 @@ public class GamePanel extends JPanel implements Runnable{
         */
 
 
-        //bloky
-        for (Block block: level1.getBlocks()) {
-            if (cube.intersects(block)) {
-                cube.setYDirection(0);
-                break;
-            } else {
-                cube.setYDirection(Cube.fallSpeed);
+        if(lastCharacter){
+            //bloky
+            for (Block block: level1.getBlocks()) {
+                if (cube.intersects(block)) {
+                    cube.setYDirection(0);
+                    break;
+                } else {
+                    cube.setYDirection(Cube.fallSpeed);
+                }
+            }
+        }else {
+            //bloky
+            for (Block block: level1.getBlocks()) {
+                if (ball.intersects(block)) {
+                    ball.setYDirection(0);
+                    break;
+                } else {
+                    ball.setYDirection(Cube.fallSpeed);
+                }
             }
         }
+
+
 
 
         /*

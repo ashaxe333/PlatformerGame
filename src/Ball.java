@@ -11,6 +11,8 @@ public class Ball extends Rectangle implements KeyListener {
     public Ball(int x, int y) {
         this.x = x;
         this.y = y;
+        this.width = GamePanel.UNIT_SIZE*2;
+        this.height = GamePanel.UNIT_SIZE*2;
     }
 
     public void setX(int x) {
@@ -25,7 +27,6 @@ public class Ball extends Rectangle implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
         /*
         if(e.getKeyCode() == KeyEvent.VK_W){
             switch (lastPressed){
@@ -45,7 +46,9 @@ public class Ball extends Rectangle implements KeyListener {
 
     @Override
     public void keyPressed(KeyEvent e){
+
         int speed = 5;
+
         if(e.getKeyCode() == KeyEvent.VK_A){
             setXDirection(-speed);
             move();
@@ -85,14 +88,14 @@ public class Ball extends Rectangle implements KeyListener {
     public void setXDirection(int speed){
         xDirection = speed;
     }
-    public void setYDirection(int fallSpeed){
-        yDirection = fallSpeed;
+    public void setYDirection(int speed){
+        yDirection = speed;
     }
 
     public void move(){
-        x = x + xDirection;
+        x += xDirection;
         setX(x);
-        y = y + yDirection;
+        y += yDirection;
         setY(y);
     }
 
