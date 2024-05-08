@@ -3,7 +3,6 @@ import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
-import java.util.Random;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -12,20 +11,21 @@ public class GamePanel extends JPanel implements Runnable{
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
 
     static final int UNIT_SIZE = 20;
-    static int x = 100;
-    static int y = 100;
-    static boolean lastCharacter = false;
+    static int x;
+    static int y;
+    static boolean lastCharacter = true;
     private Thread gameThread;
     private Image image;
     private Graphics graphics;
     private Cube cube;
     private Ball ball;
-
-    Level1 level1 = new Level1();
-    private ArrayList<Block> blocks = new ArrayList<>();
+    static Level1 level1 = new Level1();
 
     GamePanel(){
-        start();
+        newCube(100, 100);
+        newBall(cube.x, cube.y);
+        level1.createBlocks();
+        level1.createSpikes();
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
@@ -33,12 +33,6 @@ public class GamePanel extends JPanel implements Runnable{
 
         gameThread = new Thread(this);
         gameThread.start();
-    }
-
-    public void start(){
-        newCube(x, y);
-        newBall(x, y);
-        System.out.println(cube.getX() + ", " + cube.getY());
     }
 
     public void newCube(int x, int y){
@@ -50,17 +44,6 @@ public class GamePanel extends JPanel implements Runnable{
         ball = new Ball(x, y);
     }
 
-
-    /*
-    public boolean switchCharakter(){
-        if(lastCharacter){
-            newBall(x, y);
-        }else {
-            newCube(x, y);
-        }
-        return lastCharacter;
-    }
-    */
 
     public void paint(Graphics g){
         image = createImage(getWidth(), getHeight());
@@ -75,7 +58,6 @@ public class GamePanel extends JPanel implements Runnable{
         }else {
             ball.draw(g);
         }
-
         level1.draw(g);
 
 
@@ -107,99 +89,50 @@ public class GamePanel extends JPanel implements Runnable{
         }else {
             ball.move();
         }
-
-
     }
 
     public void checkCollision() {
 
-        /*
-        if(cube.getY()+cube.height == 560){
-            cube.setYDirection(0);
-        }else {
-            cube.setYDirection(Cube.fallSpeed);
-        }
-        */
+        if (lastCharacter) {
 
-
-        if(lastCharacter){
             //bloky
+            cube.myIntersects(level1.getBlocks());
+
+
+
+            //strany okna
+            if (cube.x - 10 == GAME_WIDTH || cube.x + cube.width + 10 == 0) {
+                newCube(300, 300);
+            }
+            /*
             for (Block block: level1.getBlocks()) {
-                if (cube.intersects(block)) {
+                //spodní strana charakteru X horní strana bloku
+                if((cube.y+cube.height >= block.y) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
                     cube.setYDirection(0);
                     break;
-                } else {
+                }else {
                     cube.setYDirection(Cube.fallSpeed);
                 }
-            }
-        }else {
-            //bloky
-            for (Block block: level1.getBlocks()) {
-                if (ball.intersects(block)) {
-                    ball.setYDirection(0);
+
+                //horní strana charakteru X spodní strana bloku
+                if((cube.y >= block.y+block.height) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
+                    cube.setYDirection(Cube.fallSpeed);
                     break;
-                } else {
-                    ball.setYDirection(Cube.fallSpeed);
+                }
+
+                //pravá strana charakteru X levá strana bloku
+                if((cube.x+cube.width >= block.x) && ((cube.y+cube.height >= block.y) && (cube.y <= block.y+block.height))){
+                    cube.setXDirection(0);
+                    break;
+                }
+                //levá strana charakteru X pravá strana bloku
+                if((cube.x >= block.x+block.width) && ((cube.y+cube.height >= block.y) && (cube.y <= block.y+block.height))){
+                    cube.setXDirection(0);
+                    break;
                 }
             }
+            */
         }
-
-
-
-
-        /*
-        //strany okna
-        if(cube.getX()-10 == GAME_WIDTH || cube.getX()+cube.getWidth()+10 == 0){
-            newCube(300, 300);
-        }
-
-        //spiky
-        for (Spike spike: level1.getSpikes()) {
-            if (cube.intersects(spike)) {
-                cube.setYDirection(0);
-                cube.setXDirection(0);
-                newCube(50, 100);
-            }
-        }
-
- */
-
-
-
-/*
-        for(int i = 0; i < blocks.size(); i++){
-            if(cube.getY() + cube.getHeight() == block.getY()){
-                cube.setYDirection(0);
-            }else {
-                cube.setYDirection(cube.getFallSpeed());
-            }
-        }
-
-        }else {
-            for(int i = 0; i < blocks.size(); i++){
-                if(ball.getY() + ball.getHeight() == blocks.get(i).getY()){
-                    ball.setYDirection(0);
-                }else {
-                    ball.setYDirection(ball.getFallSpeed());
-                }
-            }
-
-            if(ball.getX()-10 == GAME_WIDTH || ball.getX()+ball.getWidth()+10 == 0){
-                Thread.sleep(1000);
-                newBall(100, 100);
-            }
-        }
-
-        //Pruchody na stranach
-
-        if(cube.getX()-10 == GAME_WIDTH){
-            newCube(-50, cube.getY());
-        }
-        if(cube.getX()+cube.getWidth()+10 == 0){
-            newCube(GAME_WIDTH, cube.getY());
-        }       FUNGUJE NAPUL???
-        */
-
     }
 
     public void run(){

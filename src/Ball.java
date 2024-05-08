@@ -27,20 +27,6 @@ public class Ball extends Rectangle implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        /*
-        if(e.getKeyCode() == KeyEvent.VK_W){
-            switch (lastPressed){
-                case KeyEvent.VK_A:
-                    setX(x-portLength);
-                    move();
-                    break;
-                case KeyEvent.VK_D:
-                    setX(x+portLength);
-                    move();
-                    break;
-            }
-        }
-        */
     }
 
 

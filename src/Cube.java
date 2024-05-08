@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.util.ArrayList;
 
 public class Cube extends Rectangle implements KeyListener {
     private int xDirection;
     private int yDirection;
-    static final int fallSpeed = 10;
+    static final int fallSpeed = 5;
+    static final int speed = 5;
     private int lastPressed;
+
 
     public Cube(int x, int y) {
         this.x = x;
@@ -27,38 +30,25 @@ public class Cube extends Rectangle implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-        /*
-        if(e.getKeyCode() == KeyEvent.VK_W){
-            switch (lastPressed){
-                case KeyEvent.VK_A:
-                    setX(x-portLength);
-                    move();
-                    break;
-                case KeyEvent.VK_D:
-                    setX(x+portLength);
-                    move();
-                    break;
-            }
-        }
-        */
     }
 
 
     @Override
     public void keyPressed(KeyEvent e){
 
-        int speed = 5;
-
         if(e.getKeyCode() == KeyEvent.VK_A){
+            //leftXRight(GamePanel.level1.getBlocks());
             setXDirection(-speed);
             setLastPressed(KeyEvent.VK_A);
             move();
         }
         if(e.getKeyCode() == KeyEvent.VK_D){
+            //rightXLeft(GamePanel.level1.getBlocks());
             setXDirection(speed);
             setLastPressed(KeyEvent.VK_D);
             move();
         }
+
         if(e.getKeyCode() == KeyEvent.VK_W){
 
             int portLength = width * 3;
@@ -100,6 +90,62 @@ public class Cube extends Rectangle implements KeyListener {
 
     public void setLastPressed(int keyEvent){
         lastPressed = keyEvent;
+    }
+
+    /*
+    public void rightXLeft(ArrayList<Block> blocks){
+        for (Block block: blocks) {
+            //pravá strana charakteru X levá strana bloku
+            if((x+width <= block.x) && ((y+height >= block.y) && (y <= block.y+block.height))){
+                setXDirection(0);
+                break;
+            }else {
+                setXDirection(speed);
+            }
+        }
+    }
+
+
+    public void leftXRight(ArrayList<Block> blocks){
+        for (Block block: blocks) {
+            //levá strana charakteru X pravá strana bloku
+            if((x >= block.x+block.width) && ((y+height >= block.y) && (y <= block.y+block.height))){
+                setXDirection(0);
+                break;
+            }else {
+                setXDirection(-speed);
+            }
+        }
+    }
+    */
+    public void myIntersects(ArrayList<Block> blocks){
+        for (Block block: blocks) {
+            //spodní strana charakteru X horní strana bloku
+            if((y+height >= block.y) && ((x+width >= block.x) && (x <= block.x+block.width))){
+                setYDirection(0);
+                break;
+            }else {
+                setYDirection(Cube.fallSpeed);
+            }
+            /*
+            //horní strana charakteru X spodní strana bloku
+            if((cube.y >= block.y+block.height) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
+                cube.setYDirection(Cube.fallSpeed);
+                break;
+            }
+
+            //pravá strana charakteru X levá strana bloku
+            if((x+width >= block.x) && ((y+height >= block.y) && (y <= block.y+block.height))){
+                setXDirection(0);
+                break;
+            }
+            //levá strana charakteru X pravá strana bloku
+            if((x >= block.x+block.width) && ((y+height >= block.y) && (y <= block.y+block.height))){
+                setXDirection(0);
+                break;
+            }
+            */
+        }
     }
 
     public void move(){
