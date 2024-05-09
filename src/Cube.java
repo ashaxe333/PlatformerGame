@@ -63,9 +63,16 @@ public class Cube extends Rectangle implements KeyListener {
                     move();
                     break;
             }
+            keyReleased(e);
         }
         if(e.getKeyCode() == KeyEvent.VK_X){
             GamePanel.lastCharacter = false;
+        }
+
+        //testovací
+        if(e.getKeyCode() == KeyEvent.VK_P){
+            setYDirection(-4*fallSpeed);
+            move();
         }
     }
 
@@ -92,11 +99,12 @@ public class Cube extends Rectangle implements KeyListener {
         lastPressed = keyEvent;
     }
 
+
     /*
     public void rightXLeft(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //pravá strana charakteru X levá strana bloku
-            if((x+width <= block.x) && ((y+height >= block.y) && (y <= block.y+block.height))){
+            if(((x+width >= block.x) && (x < block.x+block.width)) && ((y+height >= block.y) && (y <= block.y+block.height))){
                 setXDirection(0);
                 break;
             }else {
@@ -105,11 +113,10 @@ public class Cube extends Rectangle implements KeyListener {
         }
     }
 
-
     public void leftXRight(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //levá strana charakteru X pravá strana bloku
-            if((x >= block.x+block.width) && ((y+height >= block.y) && (y <= block.y+block.height))){
+            if(((x <= block.x+block.width) && (x+width >= block.x)) && ((y+height >= block.y) && (y <= block.y+block.height))){
                 setXDirection(0);
                 break;
             }else {
@@ -117,34 +124,18 @@ public class Cube extends Rectangle implements KeyListener {
             }
         }
     }
-    */
+
+     */
+
     public void myIntersects(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //spodní strana charakteru X horní strana bloku
-            if((y+height >= block.y) && ((x+width >= block.x) && (x <= block.x+block.width))){
+            if(((y+height >= block.y) && (y <= block.y+block.height)) && ((x+width >= block.x) && (x <= block.x+block.width))){
                 setYDirection(0);
                 break;
             }else {
                 setYDirection(Cube.fallSpeed);
             }
-            /*
-            //horní strana charakteru X spodní strana bloku
-            if((cube.y >= block.y+block.height) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
-                cube.setYDirection(Cube.fallSpeed);
-                break;
-            }
-
-            //pravá strana charakteru X levá strana bloku
-            if((x+width >= block.x) && ((y+height >= block.y) && (y <= block.y+block.height))){
-                setXDirection(0);
-                break;
-            }
-            //levá strana charakteru X pravá strana bloku
-            if((x >= block.x+block.width) && ((y+height >= block.y) && (y <= block.y+block.height))){
-                setXDirection(0);
-                break;
-            }
-            */
         }
     }
 

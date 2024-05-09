@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.ArrayList;
 
 public class GamePanel extends JPanel implements Runnable{
 
@@ -92,46 +91,17 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void checkCollision() {
-
+        //Cube
         if (lastCharacter) {
-
             //bloky
             cube.myIntersects(level1.getBlocks());
-
-
-
             //strany okna
             if (cube.x - 10 == GAME_WIDTH || cube.x + cube.width + 10 == 0) {
                 newCube(300, 300);
             }
-            /*
-            for (Block block: level1.getBlocks()) {
-                //spodní strana charakteru X horní strana bloku
-                if((cube.y+cube.height >= block.y) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
-                    cube.setYDirection(0);
-                    break;
-                }else {
-                    cube.setYDirection(Cube.fallSpeed);
-                }
+        //Ball
+        }else {
 
-                //horní strana charakteru X spodní strana bloku
-                if((cube.y >= block.y+block.height) && ((cube.x+cube.width >= block.x) && (cube.x <= block.x+block.width))){
-                    cube.setYDirection(Cube.fallSpeed);
-                    break;
-                }
-
-                //pravá strana charakteru X levá strana bloku
-                if((cube.x+cube.width >= block.x) && ((cube.y+cube.height >= block.y) && (cube.y <= block.y+block.height))){
-                    cube.setXDirection(0);
-                    break;
-                }
-                //levá strana charakteru X pravá strana bloku
-                if((cube.x >= block.x+block.width) && ((cube.y+cube.height >= block.y) && (cube.y <= block.y+block.height))){
-                    cube.setXDirection(0);
-                    break;
-                }
-            }
-            */
         }
     }
 
@@ -162,7 +132,6 @@ public class GamePanel extends JPanel implements Runnable{
             }else {
                 ball.keyPressed(e);
             }
-
         }
         public void keyReleased(KeyEvent e) {
             if(lastCharacter){
@@ -170,7 +139,6 @@ public class GamePanel extends JPanel implements Runnable{
             }else {
                 ball.keyReleased(e);
             }
-
         }
         public void keyTyped(KeyEvent e) {
             if (lastCharacter){
