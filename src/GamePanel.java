@@ -91,14 +91,13 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public void checkCollision() {
-        //Cube
         //System.out.println(level1.getBlocks());
         //System.out.println(level1.getBlocks().size());
-        //System.out.println(cube.x);
+        System.out.println(cube.x);
         //System.out.println(cube.y);
         if (lastCharacter) {
             //bloky
-            cube.myIntersects(level1.getBlocks());
+            cube.gravity(level1.getBlocks());
             //strany okna
             if (cube.x - 10 == GAME_WIDTH || cube.x + cube.width + 10 == 0) {
                 newCube(300, 300);

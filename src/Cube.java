@@ -3,8 +3,6 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
-import static com.sun.java.accessibility.util.AWTEventMonitor.removeKeyListener;
-
 public class Cube extends Rectangle implements KeyListener {
     private int xDirection;
     private int yDirection;
@@ -51,6 +49,7 @@ public class Cube extends Rectangle implements KeyListener {
             move();
         }
 
+        /*
         if(e.getKeyCode() == KeyEvent.VK_W){
 
             int portLength = width * 3;
@@ -67,14 +66,10 @@ public class Cube extends Rectangle implements KeyListener {
             }
             keyReleased(e);
         }
+        */
+
         if(e.getKeyCode() == KeyEvent.VK_X){
             GamePanel.lastCharacter = false;
-        }
-
-        //testovací
-        if(e.getKeyCode() == KeyEvent.VK_P){
-            setYDirection(-4*fallSpeed);
-            move();
         }
     }
 
@@ -105,10 +100,11 @@ public class Cube extends Rectangle implements KeyListener {
         for (Block block: blocks) {
             //levá strana charakteru X pravá strana bloku
             if(((x <= block.x+block.width) && (x+width >= block.x)) && ((y+height >= block.y) && (y <= block.y+block.height))){
-                setXDirection(0);
+                setXDirection(2);
                 break;
             }else {
                 setXDirection(-speed);
+                break;
             }
         }
     }
@@ -117,17 +113,18 @@ public class Cube extends Rectangle implements KeyListener {
     public void rightXLeft(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //pravá strana charakteru X levá strana bloku
-            if(((x+width >= block.x) && (x < block.x+block.width)) && ((y+height >= block.y) && (y <= block.y+block.height))){
+            if(((x+width <= block.x-5) && (x >= block.x+block.width+5)) && ((y+height >= block.y) && (y <= block.y+block.height))){
                 setXDirection(0);
                 break;
             }else {
                 setXDirection(speed);
+                break;
             }
         }
     }
 
 
-    public void myIntersects(ArrayList<Block> blocks){
+    public void gravity(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //spodní strana charakteru X horní strana bloku
             if(((y+height >= block.y) && (y <= block.y+block.height)) && ((x+width >= block.x) && (x <= block.x+block.width))){
