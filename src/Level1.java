@@ -44,7 +44,6 @@ public class Level1 {
         blocks.add(new Block(GamePanel.UNIT_SIZE*44, GamePanel.UNIT_SIZE*16, GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*2));
 
         blocks.add(new Block(GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*14, GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*2));
-
     }
 
     public void createSpikes(){
@@ -53,8 +52,6 @@ public class Level1 {
     }
 
     public void draw(Graphics g){
-        createBlocks();
-        createSpikes();
         checkpoint.draw(g);
         for(Block b: blocks){
             b.draw(g);

@@ -92,6 +92,10 @@ public class GamePanel extends JPanel implements Runnable{
 
     public void checkCollision() {
         //Cube
+        //System.out.println(level1.getBlocks());
+        //System.out.println(level1.getBlocks().size());
+        //System.out.println(cube.x);
+        //System.out.println(cube.y);
         if (lastCharacter) {
             //bloky
             cube.myIntersects(level1.getBlocks());

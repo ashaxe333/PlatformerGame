@@ -3,6 +3,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 
+import static com.sun.java.accessibility.util.AWTEventMonitor.removeKeyListener;
+
 public class Cube extends Rectangle implements KeyListener {
     private int xDirection;
     private int yDirection;
@@ -37,14 +39,14 @@ public class Cube extends Rectangle implements KeyListener {
     public void keyPressed(KeyEvent e){
 
         if(e.getKeyCode() == KeyEvent.VK_A){
-            //leftXRight(GamePanel.level1.getBlocks());
-            setXDirection(-speed);
+            leftXRight(GamePanel.level1.getBlocks());
+            //setXDirection(-speed);
             setLastPressed(KeyEvent.VK_A);
             move();
         }
         if(e.getKeyCode() == KeyEvent.VK_D){
-            //rightXLeft(GamePanel.level1.getBlocks());
-            setXDirection(speed);
+            rightXLeft(GamePanel.level1.getBlocks());
+            //setXDirection(speed);
             setLastPressed(KeyEvent.VK_D);
             move();
         }
@@ -99,20 +101,6 @@ public class Cube extends Rectangle implements KeyListener {
         lastPressed = keyEvent;
     }
 
-
-    /*
-    public void rightXLeft(ArrayList<Block> blocks){
-        for (Block block: blocks) {
-            //pravá strana charakteru X levá strana bloku
-            if(((x+width >= block.x) && (x < block.x+block.width)) && ((y+height >= block.y) && (y <= block.y+block.height))){
-                setXDirection(0);
-                break;
-            }else {
-                setXDirection(speed);
-            }
-        }
-    }
-
     public void leftXRight(ArrayList<Block> blocks){
         for (Block block: blocks) {
             //levá strana charakteru X pravá strana bloku
@@ -125,7 +113,19 @@ public class Cube extends Rectangle implements KeyListener {
         }
     }
 
-     */
+
+    public void rightXLeft(ArrayList<Block> blocks){
+        for (Block block: blocks) {
+            //pravá strana charakteru X levá strana bloku
+            if(((x+width >= block.x) && (x < block.x+block.width)) && ((y+height >= block.y) && (y <= block.y+block.height))){
+                setXDirection(0);
+                break;
+            }else {
+                setXDirection(speed);
+            }
+        }
+    }
+
 
     public void myIntersects(ArrayList<Block> blocks){
         for (Block block: blocks) {
