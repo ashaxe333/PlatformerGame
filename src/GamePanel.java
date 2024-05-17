@@ -21,10 +21,10 @@ public class GamePanel extends JPanel implements Runnable{
     static Level1 level1 = new Level1();
 
     GamePanel(){
-        newCube(100, 100);
-        newBall(cube.x, cube.y);
         level1.createBlocks();
         level1.createSpikes();
+        newCube(120, 100);
+        newBall(cube.x, cube.y);
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
@@ -76,28 +76,48 @@ public class GamePanel extends JPanel implements Runnable{
         for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
             g2D.setColor(new Color(40, 160, 0));
             g2D.setStroke(new BasicStroke(random.nextInt(7)+1));
-            //g2D.drawLine(0, i*(random.nextInt(3)+39), GAME_WIDTH, i*(random.nextInt(3)+39)); NEFUNGUJE, WTF
             g2D.drawLine(0, i*UNIT_SIZE*2-(random.nextInt(21)-10), GAME_WIDTH, i*UNIT_SIZE*2-(random.nextInt(21)-10));
         }
         */
     }
 
     public void move(){
+        /*
         if(lastCharacter){
             cube.move();
         }else {
             ball.move();
         }
+
+         */
     }
 
     public void checkCollision() {
-        //System.out.println(level1.getBlocks());
-        //System.out.println(level1.getBlocks().size());
-        System.out.println(cube.x);
-        //System.out.println(cube.y);
         if (lastCharacter) {
+            if(cube.getKeyMap().get(KeyEvent.VK_A)){
+                cube.checkX(GamePanel.level1.getBlocks(), -Cube.speed, 0);
+            }
+            if(cube.getKeyMap().get(KeyEvent.VK_D)){
+                cube.checkX(GamePanel.level1.getBlocks(), Cube.speed, 0);
+            }
+            if(cube.onGround(GamePanel.level1.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
+                cube.setVelocityUp(20);
+            }
+            if(cube.getKeyMap().get(KeyEvent.VK_X)){
+                GamePanel.lastCharacter = false;
+            }
             //bloky
-            cube.gravity(level1.getBlocks());
+            if(cube.getVelocityUp() > 0){
+                if(cube.checkX(GamePanel.level1.getBlocks(), 0, -cube.getVelocityUp())){
+                    cube.setVelocityUp(0);
+                }else{
+                    cube.setVelocityUp(cube.getVelocityUp()-1);
+                }
+
+            }else {
+                cube.checkX(level1.getBlocks(), 0, Cube.fallSpeed);
+            }
+
             //strany okna
             if (cube.x - 10 == GAME_WIDTH || cube.x + cube.width + 10 == 0) {
                 newCube(300, 300);
@@ -111,7 +131,7 @@ public class GamePanel extends JPanel implements Runnable{
     public void run(){
         //game loop
         long lastTime = System.nanoTime();
-        double amountOfTicks = 60;
+        double amountOfTicks = 120;
         double nanoSeconds = 1000000000/amountOfTicks;
         double delta = 0;
         while(true){
