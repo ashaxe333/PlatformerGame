@@ -19,11 +19,14 @@ public class GamePanel extends JPanel implements Runnable{
     private Cube cube;
     private Ball ball;
     static Level1 level1 = new Level1();
+    static Level2 level2 = new Level2();
 
     GamePanel(){
         level1.createBlocks();
+        level2.createBlocks();
         level1.createSpikes();
-        newCube(120, 100);
+        level2.createSpikes();
+        newCube(100, 500);
         newBall(cube.x, cube.y);
         this.setFocusable(true);
         this.addKeyListener(new AL());
@@ -81,34 +84,29 @@ public class GamePanel extends JPanel implements Runnable{
         */
     }
 
-    public void move(){
-        /*
-        if(lastCharacter){
-            cube.move();
-        }else {
-            ball.move();
-        }
-
-         */
-    }
-
     public void checkCollision() {
+        //Cube
         if (lastCharacter) {
+            if(cube.intersects(level1.getCheckpoint())){
+                level1.getCheckpoint().setTauched(true);
+            }
             if(cube.getKeyMap().get(KeyEvent.VK_A)){
-                cube.checkX(GamePanel.level1.getBlocks(), -Cube.speed, 0);
+                cube.checkX(level1.getBlocks(), -Cube.speed, 0);
             }
             if(cube.getKeyMap().get(KeyEvent.VK_D)){
-                cube.checkX(GamePanel.level1.getBlocks(), Cube.speed, 0);
+                cube.checkX(level1.getBlocks(), Cube.speed, 0);
             }
-            if(cube.onGround(GamePanel.level1.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
-                cube.setVelocityUp(20);
+            if(cube.onGround(level1.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
+                cube.setVelocityUp(15);
             }
             if(cube.getKeyMap().get(KeyEvent.VK_X)){
-                GamePanel.lastCharacter = false;
+                ball.setX(cube.x);
+                ball.setY(cube.y);
+                ball.setNormalGravity(true);
+                lastCharacter = false;
             }
-            //bloky
             if(cube.getVelocityUp() > 0){
-                if(cube.checkX(GamePanel.level1.getBlocks(), 0, -cube.getVelocityUp())){
+                if(cube.checkX(level1.getBlocks(), 0, -cube.getVelocityUp())){
                     cube.setVelocityUp(0);
                 }else{
                     cube.setVelocityUp(cube.getVelocityUp()-1);
@@ -118,20 +116,76 @@ public class GamePanel extends JPanel implements Runnable{
                 cube.checkX(level1.getBlocks(), 0, Cube.fallSpeed);
             }
 
-            //strany okna
-            if (cube.x - 10 == GAME_WIDTH || cube.x + cube.width + 10 == 0) {
-                newCube(300, 300);
+            //window
+            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT) {
+                newCube(100, 500);
             }
         //Ball
         }else {
+            if(ball.getKeyMap().get(KeyEvent.VK_A)){
+                ball.checkX(level1.getBlocks(), -Ball.speed, 0);
+            }
+            if(ball.getKeyMap().get(KeyEvent.VK_D)){
+                ball.checkX(level1.getBlocks(), Ball.speed, 0);
+            }
+            if(ball.isNormalGravity()){
+                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
+                    ball.setNormalGravity(false);
+                }
+            }else {
+                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
+                    ball.setNormalGravity(true);
+                }
+            }
+            if(ball.getKeyMap().get(KeyEvent.VK_X)){
+                cube.setX(ball.x);
+                cube.setY(ball.y);
+                lastCharacter = true;
+            }
+            if(ball.isNormalGravity()){
+                ball.checkX(level1.getBlocks(), 0, Ball.fallSpeed);
 
+            }else {
+                ball.checkX(level1.getBlocks(), 0, -Ball.fallSpeed);
+            }
+
+            //window
+            if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT) {
+                newCube(100, 500);
+            }
+
+            /*
+            if(ball.getKeyMap().get(KeyEvent.VK_A)){
+                ball.checkX(level1.getBlocks(), -Ball.speed, 0);
+            }
+            if(ball.getKeyMap().get(KeyEvent.VK_D)){
+                ball.checkX(level1.getBlocks(), Ball.speed, 0);
+            }
+            if(ball.isNormalGravity()){
+                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
+                    ball.setNormalGravity(false);
+                }
+            }else {
+                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
+                    ball.setNormalGravity(true);
+                }
+            }
+
+            if(ball.getKeyMap().get(KeyEvent.VK_X)){
+                cube.setX(ball.x);
+                cube.setY(ball.y);
+                lastCharacter = true;
+            }
+            */
         }
+
+
     }
 
     public void run(){
         //game loop
         long lastTime = System.nanoTime();
-        double amountOfTicks = 120;
+        double amountOfTicks = 100;
         double nanoSeconds = 1000000000/amountOfTicks;
         double delta = 0;
         while(true){
@@ -140,7 +194,6 @@ public class GamePanel extends JPanel implements Runnable{
             lastTime = now;
             if(delta >= 1){
                 checkCollision();
-                move();
                 repaint();
                 delta--;
             }

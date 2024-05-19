@@ -2,19 +2,19 @@ import java.awt.*;
 
 public class Checkpoint extends Rectangle{
 
-    static boolean tauched = false;
+    private boolean tauched = false;
 
     public Checkpoint(int x, int y) {
         this.x = x;
         this.y = y;
     }
 
-    public static boolean isTauched() {
+    public boolean isTauched() {
         return tauched;
     }
 
-    public static void setTauched(boolean tauched) {
-        Checkpoint.tauched = tauched;
+    public void setTauched(boolean tauched) {
+        this.tauched = tauched;
     }
 
     public void draw(Graphics g){

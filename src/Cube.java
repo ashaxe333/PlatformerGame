@@ -48,9 +48,7 @@ public class Cube extends Rectangle implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-    }
-
+    public void keyTyped(KeyEvent e) {}
 
     @Override
     public void keyPressed(KeyEvent e){
@@ -79,7 +77,6 @@ public class Cube extends Rectangle implements KeyListener {
             ){
                 setXDirection(0);
                 setYDirection(0);
-                //move();
                 return true;
             }
         }
