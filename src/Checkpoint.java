@@ -4,9 +4,11 @@ public class Checkpoint extends Rectangle{
 
     private boolean tauched = false;
 
-    public Checkpoint(int x, int y) {
+    public Checkpoint(int x, int y, int width, int height) {
         this.x = x;
         this.y = y;
+        this.width = width;
+        this.height = height;
     }
 
     public boolean isTauched() {
@@ -19,6 +21,6 @@ public class Checkpoint extends Rectangle{
 
     public void draw(Graphics g){
         g.setColor(Color.RED);
-        g.fillOval(x, y, 20, 20);
+        g.fillOval(x, y, width, height);
     }
 }

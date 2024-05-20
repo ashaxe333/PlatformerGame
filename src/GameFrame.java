@@ -5,6 +5,9 @@ public class GameFrame extends JFrame {
 
     GamePanel gamePanel = new GamePanel();
 
+    /**
+     * Creates window
+     */
     GameFrame(){
         this.add(gamePanel);
         this.setBackground(new Color(10, 40, 0));

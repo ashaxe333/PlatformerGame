@@ -1,7 +1,7 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Level1 extends Level{
+public class Level4 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
@@ -11,7 +11,7 @@ public class Level1 extends Level{
 
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE, GamePanel.UNIT_SIZE);
 
-    public Level1() {
+    public Level4() {
     }
 
     public ArrayList<Block> getBlocks() {

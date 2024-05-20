@@ -1,12 +1,15 @@
 import java.awt.*;
 import java.util.ArrayList;
 
-public class Level2 {
+public class Level2 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
 
-    private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6);
+    private final int xStart = 100;
+    private final int yStart = 500;
+
+    private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*40, GamePanel.UNIT_SIZE*10, GamePanel.UNIT_SIZE, GamePanel.UNIT_SIZE);
 
     public Level2() {
     }
@@ -23,16 +26,16 @@ public class Level2 {
         return checkpoint;
     }
 
-    public void setCheckpoint(Checkpoint checkpoint) {
-        this.checkpoint = checkpoint;
+    public int getXStart() {
+        return xStart;
+    }
+
+    public int getYStart() {
+        return yStart;
     }
 
     public void createBlocks(){
         blocks.add(new Block(GamePanel.UNIT_SIZE*3, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*2)); //bottom
-
-        blocks.add(new Block(GamePanel.UNIT_SIZE*32, GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*2));
-        blocks.add(new Block(GamePanel.UNIT_SIZE*46, GamePanel.UNIT_SIZE*24, GamePanel.UNIT_SIZE*14, GamePanel.UNIT_SIZE*2));
-        blocks.add(new Block(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*20, GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*4));
 
         blocks.add(new Block(GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*18, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*2));
         blocks.add(new Block(GamePanel.UNIT_SIZE*14, GamePanel.UNIT_SIZE*20, GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*2));
