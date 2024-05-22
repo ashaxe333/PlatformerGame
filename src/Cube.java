@@ -10,9 +10,7 @@ public class Cube extends Rectangle implements KeyListener {
     static final int fallSpeed = 5;
     static final int speed = 5;
     private int velocityUp = 0;
-
     private HashMap<Integer, Boolean> keyMap = new HashMap<>();
-
 
     public Cube(int x, int y) {
         this.x = x;
@@ -25,16 +23,26 @@ public class Cube extends Rectangle implements KeyListener {
         keyMap.put(KeyEvent.VK_X, false);
     }
 
+    /**
+     * Sets new x cube coordinate
+     * @param x - new x coordinate
+     */
     public void setX(int x) {
         this.x = x;
-        GamePanel.x = x;
     }
 
+    /**
+     * Sets new y cube coordinate
+     * @param y - new y coordinate
+     */
     public void setY(int y) {
         this.y = y;
-        GamePanel.y = y;
     }
 
+    /**
+     * Sets up velocity for jump
+     * @param velocityUp - jump height
+     */
     public void setVelocityUp(int velocityUp) {
         this.velocityUp = velocityUp;
     }
@@ -48,25 +56,42 @@ public class Cube extends Rectangle implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {
+
+    }
 
     @Override
     public void keyPressed(KeyEvent e){
         keyMap.put(e.getKeyCode(), true);
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         keyMap.put(e.getKeyCode(), false);
     }
 
+    /**
+     * Sets x direction
+     * @param speed - speed of cube
+     */
     public void setXDirection(int speed){
         xDirection = speed;
     }
+
+    /**
+     * Sets y direction
+     * @param speed - fall speed of cube
+     */
     public void setYDirection(int speed){
         yDirection = speed;
     }
 
+    /**
+     * Chacks collisions between cube and blocks of current level
+     * @param blocks - block ArrayList of current level
+     * @param xMovement - speed of cube for the x-axis
+     * @param yMovement - speed of cube for the y-axis
+     * @return boolean if cube has collision
+     */
     public boolean checkX(ArrayList<Block> blocks, int xMovement, int yMovement){
         for (Block block: blocks) {
             if(
@@ -86,6 +111,11 @@ public class Cube extends Rectangle implements KeyListener {
         return false;
     }
 
+    /**
+     * Checks if cube is touching ground. If yes, cube can jump
+     * @param blocks - block ArrayList of current level
+     * @return boolean if cube is touching ground
+     */
     public boolean onGround(ArrayList<Block> blocks){
         for (Block block: blocks) {
             if(
@@ -100,6 +130,9 @@ public class Cube extends Rectangle implements KeyListener {
         return false;
     }
 
+    /**
+     * Sets a new coordinates using xDirection for x-axis and yDirection for y-axis
+     */
     public void move(){
         x += xDirection;
         setX(x);
@@ -107,6 +140,10 @@ public class Cube extends Rectangle implements KeyListener {
         setY(y);
     }
 
+    /**
+     * Repaints cube on new coordinates
+     * @param g - Graphics
+     */
     public void draw(Graphics g){
         g.setColor(Color.RED);
         g.fillRect(x, y, width, height);

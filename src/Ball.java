@@ -10,9 +10,7 @@ public class Ball extends Rectangle implements KeyListener {
     static final int fallSpeed = 5;
     static final int speed = 5;
     private boolean normalGravity = true;
-
     private HashMap<Integer, Boolean> keyMap = new HashMap<>();
-
 
     public Ball(int x, int y) {
         this.x = x;
@@ -27,39 +25,25 @@ public class Ball extends Rectangle implements KeyListener {
 
     public void setX(int x) {
         this.x = x;
-        GamePanel.x = x;
     }
-
     public void setY(int y) {
         this.y = y;
-        GamePanel.y = y;
     }
-
-    public boolean isNormalGravity() {
-        return normalGravity;
-    }
-
-    public void setNormalGravity(boolean normalGravity) {
-        this.normalGravity = normalGravity;
-    }
-
+    public boolean isNormalGravity() {return normalGravity;}
+    public void setNormalGravity(boolean normalGravity) {this.normalGravity = normalGravity;}
     public HashMap<Integer, Boolean> getKeyMap() {
         return keyMap;
     }
-
     @Override
     public void keyTyped(KeyEvent e) {}
-
     @Override
     public void keyPressed(KeyEvent e){
         keyMap.put(e.getKeyCode(), true);
     }
-
     @Override
     public void keyReleased(KeyEvent e) {
         keyMap.put(e.getKeyCode(), false);
     }
-
     public void setXDirection(int speed){
         xDirection = speed;
     }

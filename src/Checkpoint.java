@@ -2,21 +2,11 @@ import java.awt.*;
 
 public class Checkpoint extends Rectangle{
 
-    private boolean tauched = false;
-
-    public Checkpoint(int x, int y, int width, int height) {
+    public Checkpoint(int x, int y) {
         this.x = x;
         this.y = y;
-        this.width = width;
-        this.height = height;
-    }
-
-    public boolean isTauched() {
-        return tauched;
-    }
-
-    public void setTauched(boolean tauched) {
-        this.tauched = tauched;
+        this.width = GamePanel.UNIT_SIZE;
+        this.height = GamePanel.UNIT_SIZE;
     }
 
     public void draw(Graphics g){

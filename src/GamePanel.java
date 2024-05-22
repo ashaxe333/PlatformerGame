@@ -9,8 +9,6 @@ public class GamePanel extends JPanel implements Runnable{
     static final int GAME_HEIGHT = 600;
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
     static final int UNIT_SIZE = 20;
-    static int x;
-    static int y;
     static boolean lastCharacter = true;
     private Thread gameThread;
     private Image image;
@@ -42,7 +40,6 @@ public class GamePanel extends JPanel implements Runnable{
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
         this.setBackground(new Color(10, 40, 0));
-
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -64,7 +61,6 @@ public class GamePanel extends JPanel implements Runnable{
     public void newBall(int x, int y){
         ball = new Ball(x, y);
     }
-
 
     /**
      * -
@@ -89,9 +85,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
         currentLevel.draw(g);
 
-
-
-/*
+        /*
         //bílé čary
         for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
             g.setColor(Color.WHITE);
@@ -113,24 +107,46 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     /**
-     * This method checks collisions between cube/ball X block/spike/checkpoint
+     * Checks collisions between cube/ball X block/spike/checkpoint
      */
-    public void checkCollision() {
-        System.out.println(currentLevel.getCheckpoint());
-        if(cube.intersects(level1.getCheckpoint())) {
+    public void checkCollision() throws InterruptedException {
+        if(cube.intersects(level1.getCheckpoint()) || ball.intersects(level1.getCheckpoint())) {
+            Thread.sleep(500);
             currentLevel = level2;
-            System.out.println(currentLevel.getBlocks());
-            newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            if(lastCharacter){
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }else {
+                newBall(currentLevel.getXStart(), currentLevel.getYStart());
+            }
+
         }
-        if(cube.intersects(level2.getCheckpoint())) {
+        if(cube.intersects(level2.getCheckpoint()) || ball.intersects(level2.getCheckpoint())) {
+            Thread.sleep(500);
             currentLevel = level3;
-            System.out.println(currentLevel.getBlocks());
-            newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            if(lastCharacter){
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }else {
+                newBall(currentLevel.getXStart(), currentLevel.getYStart());
+            }
         }
-        if(cube.intersects(level3.getCheckpoint())) {
+        if(cube.intersects(level3.getCheckpoint()) || ball.intersects(level3.getCheckpoint())) {
+            Thread.sleep(500);
             currentLevel = level4;
-            System.out.println(currentLevel.getBlocks());
-            newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            if(lastCharacter){
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }else {
+                newBall(currentLevel.getXStart(), currentLevel.getYStart());
+            }
+        }
+        for(Spike spike: currentLevel.getSpikes()){
+            if(cube.intersects(spike) || ball.intersects(spike)){
+                Thread.sleep(500);
+                if(lastCharacter){
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }else {
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                }
+            }
         }
 
         //Cube
@@ -144,12 +160,6 @@ public class GamePanel extends JPanel implements Runnable{
             if(cube.onGround(currentLevel.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
                 cube.setVelocityUp(15);
             }
-            if(cube.getKeyMap().get(KeyEvent.VK_X)){
-                ball.setX(cube.x);
-                ball.setY(cube.y);
-                ball.setNormalGravity(true);
-                lastCharacter = false;
-            }
             if(cube.getVelocityUp() > 0){
                 if(cube.checkX(currentLevel.getBlocks(), 0, -cube.getVelocityUp())){
                     cube.setVelocityUp(0);
@@ -159,9 +169,16 @@ public class GamePanel extends JPanel implements Runnable{
             }else{
                 cube.checkX(currentLevel.getBlocks(), 0, Cube.fallSpeed);
             }
-            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT) {
-                newCube(100, 500);
+            if(cube.getKeyMap().get(KeyEvent.VK_X)){
+                ball.setX(cube.x);
+                ball.setY(cube.y);
+                ball.setNormalGravity(true);
+                lastCharacter = false;
             }
+            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT) {
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }
+
         //Ball
         }else {
             if(ball.getKeyMap().get(KeyEvent.VK_A)){
@@ -183,7 +200,6 @@ public class GamePanel extends JPanel implements Runnable{
                 cube.setX(ball.x);
                 cube.setY(ball.y);
                 lastCharacter = true;
-
             }
             if(ball.isNormalGravity()){
                 ball.checkX(currentLevel.getBlocks(), 0, Ball.fallSpeed);
@@ -191,8 +207,8 @@ public class GamePanel extends JPanel implements Runnable{
             }else {
                 ball.checkX(currentLevel.getBlocks(), 0, -Ball.fallSpeed);
             }
-            if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT) {
-                newCube(100, 500);
+            if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT || ball.y+ball.height+10 <= 0 ) {
+                newBall(currentLevel.getXStart(), currentLevel.getYStart());
             }
         }
     }
@@ -210,7 +226,11 @@ public class GamePanel extends JPanel implements Runnable{
             delta += (now - lastTime)/nanoSeconds;
             lastTime = now;
             if(delta >= 1){
-                checkCollision();
+                try {
+                    checkCollision();
+                } catch (InterruptedException e) {
+                    throw new RuntimeException(e);
+                }
                 repaint();
                 delta--;
             }
@@ -218,7 +238,6 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     public class AL extends KeyAdapter {
-
         public void keyPressed(KeyEvent e){
             if(lastCharacter){
                 cube.keyPressed(e);
@@ -241,74 +260,4 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
-
-    /*
-    public void checkCollision() {
-        if(cube.intersects(level1.getCheckpoint())){
-            currentLevel = level2;
-        }
-        //Cube
-        if (lastCharacter) {
-            if(cube.getKeyMap().get(KeyEvent.VK_A)){
-                cube.checkX(level1.getBlocks(), -Cube.speed, 0);
-            }
-            if(cube.getKeyMap().get(KeyEvent.VK_D)){
-                cube.checkX(level1.getBlocks(), Cube.speed, 0);
-            }
-            if(cube.onGround(level1.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
-                cube.setVelocityUp(15);
-            }
-            if(cube.getKeyMap().get(KeyEvent.VK_X)){
-                ball.setX(cube.x);
-                ball.setY(cube.y);
-                ball.setNormalGravity(true);
-                lastCharacter = false;
-            }
-            if(cube.getVelocityUp() > 0){
-                if(cube.checkX(level1.getBlocks(), 0, -cube.getVelocityUp())){
-                    cube.setVelocityUp(0);
-                }else{
-                    cube.setVelocityUp(cube.getVelocityUp()-1);
-                }
-            }else{
-                cube.checkX(level1.getBlocks(), 0, Cube.fallSpeed);
-            }
-            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT) {
-                newCube(100, 500);
-            }
-        //Ball
-        }else {
-            if(ball.getKeyMap().get(KeyEvent.VK_A)){
-                ball.checkX(level1.getBlocks(), -Ball.speed, 0);
-            }
-            if(ball.getKeyMap().get(KeyEvent.VK_D)){
-                ball.checkX(level1.getBlocks(), Ball.speed, 0);
-            }
-            if(ball.isNormalGravity()){
-                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
-                    ball.setNormalGravity(false);
-                }
-            }else {
-                if(ball.onGround(level1.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
-                    ball.setNormalGravity(true);
-                }
-            }
-            if(ball.getKeyMap().get(KeyEvent.VK_X)){
-                cube.setX(ball.x);
-                cube.setY(ball.y);
-                lastCharacter = true;
-
-            }
-            if(ball.isNormalGravity()){
-                ball.checkX(level1.getBlocks(), 0, Ball.fallSpeed);
-
-            }else {
-                ball.checkX(level1.getBlocks(), 0, -Ball.fallSpeed);
-            }
-            if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT) {
-                newCube(100, 500);
-            }
-        }
-    }
-     */
 }

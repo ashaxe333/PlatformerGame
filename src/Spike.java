@@ -7,10 +7,14 @@ public class Spike extends Rectangle{
     private int nPoints;
 
 
-    public Spike(int[] xPoints, int[] yPoints, int nPoints) {
+    public Spike(int[] xPoints, int[] yPoints, int nPoints, int x, int y) {
         this.xPoints = xPoints;
         this.yPoints = yPoints;
         this.nPoints = nPoints;
+        this.x = x;
+        this.y = y;
+        this.width = GamePanel.UNIT_SIZE;
+        this.height = GamePanel.UNIT_SIZE;
     }
 
     public void draw(Graphics g){
