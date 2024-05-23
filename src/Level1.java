@@ -5,9 +5,11 @@ public class Level1 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
-    private final int xStart = 100;
+    private final int xStart = 160;
     private final int yStart = 500;
-    private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6);
+    private final Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6);
+    private final CubePort cubePort = new CubePort(800, 300);
+    private final BallPort ballPort = new BallPort(250, 480);
 
     public Level1() {}
 
@@ -18,6 +20,17 @@ public class Level1 extends Level{
         return spikes;
     }
     public Checkpoint getCheckpoint() {return checkpoint;}
+
+    @Override
+    public CubePort getCubePort() {
+        return cubePort;
+    }
+
+    @Override
+    public BallPort getBallPort() {
+        return ballPort;
+    }
+
     public int getXStart() {
         return xStart;
     }
@@ -52,12 +65,31 @@ public class Level1 extends Level{
         blocks.add(new Block(GamePanel.UNIT_SIZE*50, GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*10, GamePanel.UNIT_SIZE*2));
     }
     public void createSpikes(){
+        //triples
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*30, GamePanel.UNIT_SIZE*32, GamePanel.UNIT_SIZE*31}, new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*26}, 3, GamePanel.UNIT_SIZE*30+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*30, GamePanel.UNIT_SIZE*29}, new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*26}, 3, GamePanel.UNIT_SIZE*28+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*27}, new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*26}, 3, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*5}, new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6}, 3, GamePanel.UNIT_SIZE*30+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*7}, new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6}, 3, GamePanel.UNIT_SIZE*28+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*10, GamePanel.UNIT_SIZE*9}, new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6}, 3, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+
+        //doubles
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*3}, new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*26}, 3, GamePanel.UNIT_SIZE*2+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*5}, new int[]{GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*26}, 3, GamePanel.UNIT_SIZE*4+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*26+GamePanel.UNIT_SIZE/2));
+
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*44, GamePanel.UNIT_SIZE*46, GamePanel.UNIT_SIZE*45}, new int[]{GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*24}, 3, GamePanel.UNIT_SIZE*44+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*24+GamePanel.UNIT_SIZE/2));
+        spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*42, GamePanel.UNIT_SIZE*44, GamePanel.UNIT_SIZE*43}, new int[]{GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*24}, 3, GamePanel.UNIT_SIZE*42+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*24+GamePanel.UNIT_SIZE/2));
+
+
+        //platforms
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*6, GamePanel.UNIT_SIZE*5}, new int[]{GamePanel.UNIT_SIZE*18, GamePanel.UNIT_SIZE*18, GamePanel.UNIT_SIZE*16}, 3, GamePanel.UNIT_SIZE*4+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*16+GamePanel.UNIT_SIZE/2));
+
     }
     public void draw(Graphics g){
         checkpoint.draw(g);
+        cubePort.draw(g);
+        ballPort.draw(g);
         for(Block b: blocks){
             b.draw(g);
         }

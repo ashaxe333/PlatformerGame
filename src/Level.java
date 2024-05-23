@@ -8,6 +8,8 @@ public class Level{
     private int xStart;
     private int yStart;
     private Checkpoint checkpoint;
+    private CubePort cubePort;
+    private BallPort ballPort;
 
     public Level() {}
 
@@ -20,6 +22,15 @@ public class Level{
     public Checkpoint getCheckpoint() {
         return checkpoint;
     }
+
+    public CubePort getCubePort() {
+        return cubePort;
+    }
+
+    public BallPort getBallPort() {
+        return ballPort;
+    }
+
     public int getXStart() {return xStart;}
     public int getYStart() {return yStart;}
 

@@ -59,7 +59,6 @@ public class Cube extends Rectangle implements KeyListener {
     public void keyTyped(KeyEvent e) {
 
     }
-
     @Override
     public void keyPressed(KeyEvent e){
         keyMap.put(e.getKeyCode(), true);
