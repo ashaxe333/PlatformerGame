@@ -17,18 +17,10 @@ public class Spike extends Rectangle{
         this.height = GamePanel.UNIT_SIZE;
     }
 
-    public Spike(int[] xPoints, int[] yPoints, int nPoints, int x, int y, int width, int height) {
-        this.xPoints = xPoints;
-        this.yPoints = yPoints;
-        this.nPoints = nPoints;
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-    }
-
     public void draw(Graphics g){
         g.setColor(new Color(45, 180, 0));
         g.fillPolygon(xPoints, yPoints, nPoints);
+        g.setColor(Color.BLUE);
+        g.fillRect(x, y, width, height);
     }
 }

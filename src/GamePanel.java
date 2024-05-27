@@ -97,7 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
             g.setColor(Color.WHITE);
             g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, GAME_HEIGHT);
         }
-*/
+
         Random random = new Random();
         Graphics2D g2D = (Graphics2D)g;
         for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
@@ -105,7 +105,7 @@ public class GamePanel extends JPanel implements Runnable{
             g2D.setStroke(new BasicStroke(random.nextInt(7)+1));
             g2D.drawLine(0, i*UNIT_SIZE*2-(random.nextInt(21)-10), GAME_WIDTH, i*UNIT_SIZE*2-(random.nextInt(21)-10));
         }
-
+*/
     }
 
     /**
@@ -116,29 +116,22 @@ public class GamePanel extends JPanel implements Runnable{
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
                 help = 2;
+                lastCharacter = false;
                 currentLevel = level2;
                 ball.setNormalGravity(true);
-                if(lastCharacter){
-                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                }else {
-                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                }
+                newBall(currentLevel.getXStart(), currentLevel.getYStart());
             }
         }else if(help == 2){
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
-                System.out.println("check2");
+                help = 3;
+                lastCharacter = true;
                 currentLevel = level3;
-                if(lastCharacter){
-                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                }else {
-                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                }
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
             }
         }else{
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
-                System.out.println("check3");
                 currentLevel = level4;
                 if(lastCharacter){
                     newCube(currentLevel.getXStart(), currentLevel.getYStart());
@@ -149,7 +142,6 @@ public class GamePanel extends JPanel implements Runnable{
         }
         for(Spike spike: currentLevel.getSpikes()){
             if(cube.intersects(spike) || ball.intersects(spike)){
-                System.out.println("spike!");
                 Thread.sleep(500);
                 if(lastCharacter){
                     newCube(currentLevel.getXStart(), currentLevel.getYStart());

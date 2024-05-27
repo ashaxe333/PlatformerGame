@@ -8,8 +8,6 @@ public class Level1 extends Level{
     private final int xStart = 160;
     private final int yStart = 500;
     private final Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6);
-    private final CubePort cubePort = new CubePort(800, 300);
-    private final BallPort ballPort = new BallPort(250, 480);
 
     public Level1() {}
 
@@ -20,16 +18,6 @@ public class Level1 extends Level{
         return spikes;
     }
     public Checkpoint getCheckpoint() {return checkpoint;}
-
-    @Override
-    public CubePort getCubePort() {
-        return cubePort;
-    }
-
-    @Override
-    public BallPort getBallPort() {
-        return ballPort;
-    }
 
     public int getXStart() {
         return xStart;
@@ -88,8 +76,6 @@ public class Level1 extends Level{
     }
     public void draw(Graphics g){
         checkpoint.draw(g);
-        cubePort.draw(g);
-        ballPort.draw(g);
         for(Block b: blocks){
             b.draw(g);
         }
