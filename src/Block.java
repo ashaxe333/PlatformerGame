@@ -10,6 +10,10 @@ public class Block extends Rectangle{
 
     }
 
+    /**
+     * Paints block
+     * @param g - Graphics
+     */
     public void draw(Graphics g){
         g.setColor(new Color(45, 180, 0));
         g.fillRect(x, y, width, height);

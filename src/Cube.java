@@ -12,6 +12,11 @@ public class Cube extends Rectangle implements KeyListener {
     private int velocityUp = 0;
     private HashMap<Integer, Boolean> keyMap = new HashMap<>();
 
+    /**
+     * creates cube on coordinates and sets all keyEvents on false
+     * @param x - x coordinate
+     * @param y - y coordinate
+     */
     public Cube(int x, int y) {
         this.x = x;
         this.y = y;
@@ -23,18 +28,9 @@ public class Cube extends Rectangle implements KeyListener {
         keyMap.put(KeyEvent.VK_X, false);
     }
 
-    /**
-     * Sets new x cube coordinate
-     * @param x - new x coordinate
-     */
     public void setX(int x) {
         this.x = x;
     }
-
-    /**
-     * Sets new y cube coordinate
-     * @param y - new y coordinate
-     */
     public void setY(int y) {
         this.y = y;
     }
@@ -56,9 +52,7 @@ public class Cube extends Rectangle implements KeyListener {
     }
 
     @Override
-    public void keyTyped(KeyEvent e) {
-
-    }
+    public void keyTyped(KeyEvent e) {}
     @Override
     public void keyPressed(KeyEvent e){
         keyMap.put(e.getKeyCode(), true);
@@ -85,7 +79,7 @@ public class Cube extends Rectangle implements KeyListener {
     }
 
     /**
-     * Chacks collisions between cube and blocks of current level
+     * Checks collisions between cube and blocks of current level
      * @param blocks - block ArrayList of current level
      * @param xMovement - speed of cube for the x-axis
      * @param yMovement - speed of cube for the y-axis
@@ -140,7 +134,7 @@ public class Cube extends Rectangle implements KeyListener {
     }
 
     /**
-     * Repaints cube on new coordinates
+     * Paints cube on current coordinates
      * @param g - Graphics
      */
     public void draw(Graphics g){

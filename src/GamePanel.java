@@ -35,9 +35,9 @@ public class GamePanel extends JPanel implements Runnable{
         level2.createSpikes();
         level3.createSpikes();
         level4.createSpikes();
-        newCube(level1.getXStart(), level1.getYStart());
+        newCube(level4.getXStart(), level4.getYStart());
         newBall(cube.x, cube.y);
-        currentLevel = level1;
+        currentLevel = level4;
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
@@ -133,11 +133,8 @@ public class GamePanel extends JPanel implements Runnable{
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
                 currentLevel = level4;
-                if(lastCharacter){
-                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                }else {
-                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                }
+                lastCharacter = true;
+                newCube(currentLevel.getXStart(), currentLevel.getYStart());
             }
         }
         for(Spike spike: currentLevel.getSpikes()){
@@ -160,7 +157,7 @@ public class GamePanel extends JPanel implements Runnable{
                 cube.checkX(currentLevel.getBlocks(), Cube.speed, 0);
             }
             if(cube.onGround(currentLevel.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
-                cube.setVelocityUp(15);
+                cube.setVelocityUp(14);
             }
             if(cube.getVelocityUp() > 0){
                 if(cube.checkX(currentLevel.getBlocks(), 0, -cube.getVelocityUp())){
@@ -245,6 +242,9 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    /**
+     *
+     */
     public class AL extends KeyAdapter {
         public void keyPressed(KeyEvent e){
             if(lastCharacter){
