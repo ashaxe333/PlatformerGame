@@ -8,7 +8,7 @@ public class Level2 extends Level{
     private final int xStart = 1140;
     private final int yStart = 500;
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*58, GamePanel.UNIT_SIZE*3);
-
+    private final boolean baseCharakter = false;
     public Level2() {}
 
     public ArrayList<Block> getBlocks() {
@@ -23,6 +23,11 @@ public class Level2 extends Level{
     }
     public int getYStart() {
         return yStart;
+    }
+
+    @Override
+    public boolean isBaseCharakter() {
+        return baseCharakter;
     }
 
     public void createBlocks(){

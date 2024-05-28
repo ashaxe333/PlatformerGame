@@ -10,7 +10,7 @@ public class Level3 extends Level{
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*39+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*9);
     private BallPort ballPort = new BallPort(200, 460);
     private CubePort cubePort = new CubePort(340, 300);
-
+    private final boolean baseCharakter = true;
     public Level3() {}
 
     /**
@@ -61,6 +61,11 @@ public class Level3 extends Level{
     @Override
     public CubePort getCubePort() {
         return cubePort;
+    }
+
+    @Override
+    public boolean isBaseCharakter() {
+        return baseCharakter;
     }
 
     /**

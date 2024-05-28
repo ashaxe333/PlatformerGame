@@ -22,9 +22,10 @@ public class GamePanel extends JPanel implements Runnable{
     static Level3 level3 = new Level3();
     static Level4 level4 = new Level4();
     private int help = 1;
+    private boolean lastCheckpoint = false;
 
     /**
-     * Creates Game Panel and all levels
+     * Creates Game Panel, all levels and endscreen and starts game thread
      */
     GamePanel(){
         level1.createBlocks();
@@ -35,13 +36,15 @@ public class GamePanel extends JPanel implements Runnable{
         level2.createSpikes();
         level3.createSpikes();
         level4.createSpikes();
-        newCube(level4.getXStart(), level4.getYStart());
+        newCube(level1.getXStart(), level1.getYStart());
         newBall(cube.x, cube.y);
-        currentLevel = level4;
+        currentLevel = level1;
+
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
         this.setBackground(new Color(10, 40, 0));
+
         gameThread = new Thread(this);
         gameThread.start();
     }
@@ -86,6 +89,9 @@ public class GamePanel extends JPanel implements Runnable{
             ball.draw(g);
         }
         currentLevel.draw(g);
+        if(lastCheckpoint){
+            endScreen(g);
+        }
 
 /*
         //bílé čary
@@ -116,8 +122,8 @@ public class GamePanel extends JPanel implements Runnable{
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
                 help = 2;
-                lastCharacter = false;
                 currentLevel = level2;
+                lastCharacter = currentLevel.baseCharakter;
                 ball.setNormalGravity(true);
                 newBall(currentLevel.getXStart(), currentLevel.getYStart());
             }
@@ -125,26 +131,34 @@ public class GamePanel extends JPanel implements Runnable{
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
                 help = 3;
-                lastCharacter = true;
                 currentLevel = level3;
+                lastCharacter = currentLevel.isBaseCharakter();
                 newCube(currentLevel.getXStart(), currentLevel.getYStart());
             }
-        }else{
+        }else if(help == 3){
             if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
                 Thread.sleep(500);
+                help = 4;
                 currentLevel = level4;
-                lastCharacter = true;
+                lastCharacter = currentLevel.isBaseCharakter();
                 newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }
+        }else {
+            if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
+                Thread.sleep(500);
+                lastCheckpoint = true;
             }
         }
         for(Spike spike: currentLevel.getSpikes()){
             if(cube.intersects(spike) || ball.intersects(spike)){
                 Thread.sleep(500);
+                lastCharacter = currentLevel.isBaseCharakter();
                 if(lastCharacter){
                     newCube(currentLevel.getXStart(), currentLevel.getYStart());
                 }else {
                     newBall(currentLevel.getXStart(), currentLevel.getYStart());
                 }
+
             }
         }
 
@@ -176,7 +190,7 @@ public class GamePanel extends JPanel implements Runnable{
                 ball.setNormalGravity(true);
                 lastCharacter = false;
             }
-            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT) {
+            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT || cube.y+cube.height+10 <= 0 ) {
                 newCube(currentLevel.getXStart(), currentLevel.getYStart());
             }
 
@@ -218,6 +232,15 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    public void endScreen(Graphics g){
+        g.setColor(Color.RED);
+        Font font = new Font("MV Boli", Font.BOLD, 120);
+        g.setFont(font);
+        FontMetrics fontMetrics = getFontMetrics(font);
+        g.drawString("YOU WIN!", (GAME_WIDTH - fontMetrics.stringWidth("YOU WIN!"))/2, GAME_HEIGHT/2);
+    }
+
+
     /**
      * Game loop
      */
@@ -226,7 +249,7 @@ public class GamePanel extends JPanel implements Runnable{
         double amountOfTicks = 100;
         double nanoSeconds = 1000000000/amountOfTicks;
         double delta = 0;
-        while(true){
+        while(!lastCheckpoint){
             long now = System.nanoTime();
             delta += (now - lastTime)/nanoSeconds;
             lastTime = now;

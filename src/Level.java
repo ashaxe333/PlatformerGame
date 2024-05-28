@@ -10,6 +10,7 @@ public class Level{
     private Checkpoint checkpoint;
     private CubePort cubePort;
     private BallPort ballPort;
+    boolean baseCharakter;
 
     public Level() {}
 
@@ -29,6 +30,10 @@ public class Level{
 
     public BallPort getBallPort() {
         return ballPort;
+    }
+
+    public boolean isBaseCharakter() {
+        return baseCharakter;
     }
 
     public int getXStart() {return xStart;}

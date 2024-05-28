@@ -62,7 +62,7 @@ public class Spike extends Rectangle{
     public void draw(Graphics g){
         g.setColor(new Color(45, 180, 0));
         g.fillPolygon(xPoints, yPoints, nPoints);
-        g.setColor(Color.BLUE);
-        g.fillRect(x, y, width, height);
+        //g.setColor(Color.BLUE);
+        //g.fillRect(x, y, width, height);
     }
 }

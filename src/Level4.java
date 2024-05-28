@@ -5,10 +5,11 @@ public class Level4 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
-    private final int xStart = 120;
+    private final int xStart = 140;
     private final int yStart = 100;
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*42+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*20);
     private BallPort ballPort = new BallPort(GamePanel.UNIT_SIZE*57, GamePanel.UNIT_SIZE*17);
+    private final boolean baseCharakter = true;
     public Level4() {}
 
     public ArrayList<Block> getBlocks() {
@@ -28,6 +29,11 @@ public class Level4 extends Level{
 
     public int getXStart() {return xStart;}
     public int getYStart() {return yStart;}
+
+    @Override
+    public boolean isBaseCharakter() {
+        return baseCharakter;
+    }
 
     public void createBlocks(){
         //base
