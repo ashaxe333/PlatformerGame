@@ -13,7 +13,7 @@ public class GamePanel extends JPanel implements Runnable{
     static final int GAME_HEIGHT = 600;
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
     static final int UNIT_SIZE = 20;
-    static boolean lastCharacter = true;
+    private boolean lastCharacter = true;
     private Thread gameThread;
     private Image image;
     private Graphics graphics;
@@ -152,18 +152,6 @@ public class GamePanel extends JPanel implements Runnable{
                 lastCheckpoint = true;
             }
         }
-        for(Spike spike: currentLevel.getSpikes()){
-            if(cube.intersects(spike) || ball.intersects(spike)){
-                Thread.sleep(500);
-                lastCharacter = currentLevel.isBaseCharakter();
-                if(lastCharacter){
-                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                }else {
-                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                }
-
-            }
-        }
 
         //Cube
         if (lastCharacter) {
@@ -195,6 +183,17 @@ public class GamePanel extends JPanel implements Runnable{
             }
             if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT || cube.y+cube.height+10 <= 0 ) {
                 newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            }
+            for(Spike spike: currentLevel.getSpikes()){
+                if(cube.intersects(spike)){
+                    Thread.sleep(500);
+                    lastCharacter = currentLevel.isBaseCharakter();
+                    if(lastCharacter){
+                        newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                    }else {
+                        newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                    }
+                }
             }
 
         //Ball
@@ -232,6 +231,17 @@ public class GamePanel extends JPanel implements Runnable{
             if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT || ball.y+ball.height+10 <= 0 ) {
                 newBall(currentLevel.getXStart(), currentLevel.getYStart());
             }
+            for(Spike spike: currentLevel.getSpikes()){
+                if(ball.intersects(spike)){
+                    Thread.sleep(500);
+                    lastCharacter = currentLevel.isBaseCharakter();
+                    if(lastCharacter){
+                        newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                    }else {
+                        newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                    }
+                }
+            }
         }
     }
 
@@ -244,7 +254,7 @@ public class GamePanel extends JPanel implements Runnable{
         Font font = new Font("MV Boli", Font.BOLD, 120);
         g.setFont(font);
         FontMetrics fontMetrics = getFontMetrics(font);
-        g.drawString("YOU WIN!", (GAME_WIDTH - fontMetrics.stringWidth("YOU WIN!"))/2, GAME_HEIGHT/2);
+        g.drawString("YOU WIN!", (GAME_WIDTH - fontMetrics.stringWidth("YOU WIN!"))/2, GAME_HEIGHT/2 + 60);
     }
 
 
