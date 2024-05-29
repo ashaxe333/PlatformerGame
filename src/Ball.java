@@ -4,6 +4,9 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This Rectangle is second of two player characters. This character can change the gravity and fall up or down
+ */
 public class Ball extends Rectangle implements KeyListener {
     private int xDirection;
     private int yDirection;
@@ -39,7 +42,7 @@ public class Ball extends Rectangle implements KeyListener {
     public boolean isNormalGravity() {return normalGravity;}
 
     /**
-     * Changes gravity
+     * Changes current gravity to a new one
      * @param normalGravity - new gravity
      */
     public void setNormalGravity(boolean normalGravity) {this.normalGravity = normalGravity;}
@@ -131,7 +134,7 @@ public class Ball extends Rectangle implements KeyListener {
 
     /**
      * Paints ball on current coordinates
-     * @param g - Graphics
+     * @param g - Graphics for painting
      */
     public void draw(Graphics g){
         g.setColor(Color.RED);

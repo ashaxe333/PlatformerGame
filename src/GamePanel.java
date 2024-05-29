@@ -4,6 +4,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.Random;
 
+/**
+ * GamePanel Creates Graphic output of the game
+ */
 public class GamePanel extends JPanel implements Runnable{
 
     static final int GAME_WIDTH = 1200;
@@ -69,7 +72,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     /**
      * -
-     * @param g  the <code>Graphics</code> context in which to paint
+     * @param g the <code>Graphics</code> context in which to paint
      */
     public void paint(Graphics g){
         image = createImage(getWidth(), getHeight());
@@ -80,7 +83,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     /**
      * Graphic output
-     * @param g - Graphics for draw methods of each instance
+     * @param g - Graphics for methods "draw" of each instance
      */
     public void draw(Graphics g){
         if(lastCharacter){
@@ -232,6 +235,10 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    /**
+     * Paints string at the end
+     * @param g - Graphics for painting
+     */
     public void endScreen(Graphics g){
         g.setColor(Color.RED);
         Font font = new Font("MV Boli", Font.BOLD, 120);

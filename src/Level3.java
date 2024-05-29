@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Creates level 3 (all blocks and spikes)
+ */
 public class Level3 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
@@ -13,57 +16,27 @@ public class Level3 extends Level{
     private final boolean baseCharakter = true;
     public Level3() {}
 
-    /**
-     * getter for blocks
-     * @return - Arraylist of blocks
-     */
     public ArrayList<Block> getBlocks() {
         return blocks;
     }
-
-    /**
-     * getter for spikes
-     * @return - Arraylist of spikes
-     */
     public ArrayList<Spike> getSpikes() {
         return spikes;
     }
-
-    /**
-     * getter for checkpoint
-     * @return - checkpoint
-     */
     public Checkpoint getCheckpoint() {
         return checkpoint;
     }
-
-    /**
-     * getter for x statring coordinate
-     * @return - value of x starting coordinate
-     */
     public int getXStart() {
         return xStart;
     }
-
-    /**
-     * getter for y statring coordinate
-     * @return - value of y starting coordinate
-     */
     public int getYStart() {
         return yStart;
     }
-
-    @Override
     public BallPort getBallPort() {
         return ballPort;
     }
-
-    @Override
     public CubePort getCubePort() {
         return cubePort;
     }
-
-    @Override
     public boolean isBaseCharakter() {
         return baseCharakter;
     }

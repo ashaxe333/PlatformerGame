@@ -1,11 +1,13 @@
 import java.awt.*;
 
+/**
+ * Creates triangle with hitbox. If player touches this hitbox, player dies
+ */
 public class Spike extends Rectangle{
 
     private int[] xPoints;
     private int[] yPoints;
     private int nPoints;
-
 
     /**
      * creates a spike with hitbox
@@ -57,7 +59,7 @@ public class Spike extends Rectangle{
 
     /**
      * Paints spike
-     * @param g - Graphics
+     * @param g - Graphics for painting
      */
     public void draw(Graphics g){
         g.setColor(new Color(45, 180, 0));

@@ -1,12 +1,15 @@
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Window of the game
+ */
 public class GameFrame extends JFrame {
 
     /**
      * Creates window
      */
-    GameFrame(){
+    public GameFrame(){
         GamePanel gamePanel = new GamePanel();
         this.add(gamePanel);
         this.setBackground(new Color(10, 40, 0));

@@ -4,12 +4,20 @@ import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * This Rectangle is first of two player characters. This character can jump
+ */
 public class Cube extends Rectangle implements KeyListener {
     private int xDirection;
     private int yDirection;
     static final int fallSpeed = 5;
     static final int speed = 5;
     private int velocityUp = 0;
+
+    //dopsat
+    /**
+     * KeyMap contains all game Key Events and ...
+     */
     private HashMap<Integer, Boolean> keyMap = new HashMap<>();
 
     /**
@@ -135,7 +143,7 @@ public class Cube extends Rectangle implements KeyListener {
 
     /**
      * Paints cube on current coordinates
-     * @param g - Graphics
+     * @param g - Graphics for painting
      */
     public void draw(Graphics g){
         g.setColor(Color.RED);

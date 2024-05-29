@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Creates level 4 (all blocks and spikes)
+ */
 public class Level4 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
@@ -10,6 +13,7 @@ public class Level4 extends Level{
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*42+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*20);
     private BallPort ballPort = new BallPort(GamePanel.UNIT_SIZE*57, GamePanel.UNIT_SIZE*17);
     private final boolean baseCharakter = true;
+
     public Level4() {}
 
     public ArrayList<Block> getBlocks() {
@@ -21,20 +25,18 @@ public class Level4 extends Level{
     public Checkpoint getCheckpoint() {
         return checkpoint;
     }
-
-    @Override
     public BallPort getBallPort() {
         return ballPort;
     }
-
     public int getXStart() {return xStart;}
     public int getYStart() {return yStart;}
-
-    @Override
     public boolean isBaseCharakter() {
         return baseCharakter;
     }
 
+    /**
+     * Creates blocks of the level
+     */
     public void createBlocks(){
         //base
         blocks.add(new Block(GamePanel.UNIT_SIZE*4, GamePanel.UNIT_SIZE*10+GamePanel.UNIT_SIZE/4, GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*2));
@@ -56,6 +58,9 @@ public class Level4 extends Level{
         blocks.add(new Block(GamePanel.UNIT_SIZE*38, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*2));
     }
 
+    /**
+     * Creates spikes of the level
+     */
     public void createSpikes(){
         //1
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*14, GamePanel.UNIT_SIZE*16, GamePanel.UNIT_SIZE*15}, new int[]{GamePanel.UNIT_SIZE*11, GamePanel.UNIT_SIZE*11, GamePanel.UNIT_SIZE*9}, 1));
@@ -90,12 +95,12 @@ public class Level4 extends Level{
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*26, GamePanel.UNIT_SIZE*28, GamePanel.UNIT_SIZE*27}, new int[]{GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*4}, 3));
 
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*18, GamePanel.UNIT_SIZE*20, GamePanel.UNIT_SIZE*19}, new int[]{GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*2, GamePanel.UNIT_SIZE*4}, 3));
-        //2
-
-
-        //4
-
     }
+
+    /**
+     * Paints blocks and spikes
+     * @param g - Graphics for painting
+     */
     public void draw(Graphics g){
         checkpoint.draw(g);
         ballPort.draw(g);

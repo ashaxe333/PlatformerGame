@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Creates level 2 (all blocks and spikes)
+ */
 public class Level2 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
@@ -30,6 +33,9 @@ public class Level2 extends Level{
         return baseCharakter;
     }
 
+    /**
+     * Creates blocks of the level
+     */
     public void createBlocks(){
         //middle y-axis
         blocks.add(new Block(GamePanel.UNIT_SIZE*7, GamePanel.UNIT_SIZE*14, GamePanel.GAME_WIDTH, GamePanel.UNIT_SIZE*2));
@@ -57,6 +63,10 @@ public class Level2 extends Level{
         blocks.add(new Block(GamePanel.UNIT_SIZE*21, 0, GamePanel.UNIT_SIZE*7, GamePanel.UNIT_SIZE*2));
         blocks.add(new Block(0, 0, GamePanel.UNIT_SIZE*12, GamePanel.UNIT_SIZE*2));
     }
+
+    /**
+     * Creates spikes of the level
+     */
     public void createSpikes(){
         //4
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE, GamePanel.UNIT_SIZE, GamePanel.UNIT_SIZE*3}, new int[]{GamePanel.UNIT_SIZE*14, GamePanel.UNIT_SIZE*16, GamePanel.UNIT_SIZE*15}, 4));
@@ -104,6 +114,11 @@ public class Level2 extends Level{
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*10, GamePanel.UNIT_SIZE*12, GamePanel.UNIT_SIZE*11}, new int[]{GamePanel.UNIT_SIZE*19, GamePanel.UNIT_SIZE*19, GamePanel.UNIT_SIZE*21}, 3));
         spikes.add(new Spike(new int[]{GamePanel.UNIT_SIZE*8, GamePanel.UNIT_SIZE*10, GamePanel.UNIT_SIZE*9}, new int[]{GamePanel.UNIT_SIZE*22, GamePanel.UNIT_SIZE*22, GamePanel.UNIT_SIZE*24}, 3));
     }
+
+    /**
+     * Paints blocks and spikes
+     * @param g - Graphics for painting
+     */
     public void draw(Graphics g){
         checkpoint.draw(g);
         for(Block b: blocks){
