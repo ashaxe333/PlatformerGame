@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * This Rectangle is first of two player characters. This character can jump
+ * This is first of two player characters. This one can jump
  */
 public class Cube extends Rectangle implements KeyListener {
     private int xDirection;
@@ -14,14 +14,13 @@ public class Cube extends Rectangle implements KeyListener {
     static final int speed = 5;
     private int velocityUp = 0;
 
-    //dopsat
     /**
-     * KeyMap contains all game Key Events and ...
+     * This HashMap contains all game Key Events and their boolean values if they are in use or not
      */
     private HashMap<Integer, Boolean> keyMap = new HashMap<>();
 
     /**
-     * creates cube on coordinates and sets all keyEvents on false
+     * creates cube on coordinates and sets all keyEvents on false (not in use)
      * @param x - x coordinate
      * @param y - y coordinate
      */
@@ -61,10 +60,20 @@ public class Cube extends Rectangle implements KeyListener {
 
     @Override
     public void keyTyped(KeyEvent e) {}
+
+    /**
+     * If the key is pressed, value in keyMap will sets on true (key is in use)
+     * @param e the event to be processed
+     */
     @Override
     public void keyPressed(KeyEvent e){
         keyMap.put(e.getKeyCode(), true);
     }
+
+    /**
+     * If the key is released, value in keyMap will sets on false (key is not in use)
+     * @param e the event to be processed
+     */
     @Override
     public void keyReleased(KeyEvent e) {
         keyMap.put(e.getKeyCode(), false);
@@ -93,13 +102,13 @@ public class Cube extends Rectangle implements KeyListener {
      * @param yMovement - speed of cube for the y-axis
      * @return boolean if cube has collision
      */
-    public boolean checkX(ArrayList<Block> blocks, int xMovement, int yMovement){
+    public boolean blockCollision(ArrayList<Block> blocks, int xMovement, int yMovement){
         for (Block block: blocks) {
             if(
-                    (x+width+xMovement > block.x) &&
-                    (x+xMovement < block.x + block.width) &&
-                    (y+height+yMovement > block.y) &&
-                    (y+yMovement < block.y + block.height)
+                    x+width+xMovement > block.x &&
+                    x+xMovement < block.x + block.width &&
+                    y+height+yMovement > block.y &&
+                    y+yMovement < block.y + block.height
             ){
                 setXDirection(0);
                 setYDirection(0);
@@ -109,6 +118,32 @@ public class Cube extends Rectangle implements KeyListener {
         setXDirection(xMovement);
         setYDirection(yMovement);
         move();
+        return false;
+    }
+
+    /**
+     * Checks if cube touches one of spikes of current level
+     * @param spikes - spike ArrayList of current level
+     * @return - boolean if cube touched spike
+     */
+    public boolean spikeCollision(ArrayList<Spike> spikes){
+        for (Spike spike: spikes) {
+            if(this.intersects(spike)){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks if cube touches ballPort of current level
+     * @param ballPort - BallPort of current level
+     * @return - boolean if cube touched ballPort
+     */
+    public boolean ballPortCollision(BallPort ballPort){
+        if(this.intersects(ballPort)){
+            return true;
+        }
         return false;
     }
 
@@ -129,6 +164,16 @@ public class Cube extends Rectangle implements KeyListener {
             }
         }
         return false;
+    }
+
+    /**
+     * @return boolean if cube is in game window
+     */
+    public boolean inWindow(){
+        if (this.x-10 >= GamePanel.GAME_WIDTH || this.x+this.width+10 <= 0 || this.y-10 > GamePanel.GAME_HEIGHT || this.y+this.height+10 <= 0) {
+            return false;
+        }
+        return true;
     }
 
     /**

@@ -8,11 +8,23 @@ public class Level3 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
+
+    /**
+     * Respawn x coordinate
+     */
     private final int xStart = 500;
+
+    /**
+     * Respawn y coordinate
+     */
     private final int yStart = 500;
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*39+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*9);
     private BallPort ballPort = new BallPort(200, 460);
     private CubePort cubePort = new CubePort(340, 300);
+
+    /**
+     * Respawn character (cube)
+     */
     private final boolean baseCharakter = true;
     public Level3() {}
 
@@ -119,7 +131,7 @@ public class Level3 extends Level{
     }
 
     /**
-     * Paints blocks and spikes
+     * Paints blocks and spikes, checkpoint and cubePort with ballPort
      * @param g - Graphics for painting
      */
     public void draw(Graphics g){

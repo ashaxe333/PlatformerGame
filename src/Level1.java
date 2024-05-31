@@ -8,9 +8,21 @@ public class Level1 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
+
+    /**
+     * Respawn x coordinate
+     */
     private final int xStart = 160;
+
+    /**
+     * Respawn y coordinate
+     */
     private final int yStart = 500;
     private final Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*56, GamePanel.UNIT_SIZE*6);
+
+    /**
+     * Respawn character (cube)
+     */
     private final boolean baseCharakter = true;
 
     public Level1() {}
@@ -86,7 +98,7 @@ public class Level1 extends Level{
     }
 
     /**
-     * Paints blocks and spikes
+     * Paints blocks and spikes and checkpoint
      * @param g - Graphics for painting
      */
     public void draw(Graphics g){

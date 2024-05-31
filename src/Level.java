@@ -29,9 +29,7 @@ public class Level{
     public CubePort getCubePort() {
         return cubePort;
     }
-    public BallPort getBallPort() {
-        return ballPort;
-    }
+    public BallPort getBallPort() {return ballPort;}
     public boolean isBaseCharakter() {return baseCharakter;}
 
     public int getXStart() {return xStart;}

@@ -2,7 +2,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.util.Random;
 
 /**
  * GamePanel Creates Graphic output of the game
@@ -19,18 +18,18 @@ public class GamePanel extends JPanel implements Runnable{
     private Graphics graphics;
     private Cube cube;
     private Ball ball;
-    static Level currentLevel = new Level();
-    static Level1 level1 = new Level1();
-    static Level2 level2 = new Level2();
-    static Level3 level3 = new Level3();
-    static Level4 level4 = new Level4();
+    private Level currentLevel;
+    private Level1 level1 = new Level1();
+    private Level2 level2 = new Level2();
+    private Level3 level3 = new Level3();
+    private Level4 level4 = new Level4();
     private int help = 1;
     private boolean lastCheckpoint = false;
 
     /**
      * Creates Game Panel, all levels and endscreen and starts game thread
      */
-    GamePanel(){
+    public GamePanel(){
         level1.createBlocks();
         level2.createBlocks();
         level3.createBlocks();
@@ -71,7 +70,8 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     /**
-     * -
+     * Draws all components
+     * <a href="https://www.youtube.com/watch?v=oLirZqJFKPE&list=PLZPZq0r_RZOMhCAyywfnYLlrjiVOkdAI1&index=98">...</a>
      * @param g the <code>Graphics</code> context in which to paint
      */
     public void paint(Graphics g){
@@ -97,16 +97,7 @@ public class GamePanel extends JPanel implements Runnable{
         }
 
 /*
-        //bílé čary
-        for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
-            g.setColor(Color.WHITE);
-            g.drawLine(0, i*UNIT_SIZE, GAME_WIDTH, i*UNIT_SIZE);
-        }
-        for (int i = 0; i < GAME_WIDTH/UNIT_SIZE; i++) {
-            g.setColor(Color.WHITE);
-            g.drawLine(i*UNIT_SIZE, 0, i*UNIT_SIZE, GAME_HEIGHT);
-        }
-
+        //effect
         Random random = new Random();
         Graphics2D g2D = (Graphics2D)g;
         for (int i = 0; i < GAME_HEIGHT/UNIT_SIZE; i++) {
@@ -115,65 +106,67 @@ public class GamePanel extends JPanel implements Runnable{
             g2D.drawLine(0, i*UNIT_SIZE*2-(random.nextInt(21)-10), GAME_WIDTH, i*UNIT_SIZE*2-(random.nextInt(21)-10));
         }
 */
+
     }
 
     /**
      * Checks collisions between cube/ball X block/spike/checkpoint
      */
     public void checkCollision() throws InterruptedException {
-        if(help == 1){
-            if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
-                Thread.sleep(500);
-                help = 2;
-                currentLevel = level2;
-                lastCharacter = currentLevel.baseCharakter;
-                ball.setNormalGravity(true);
-                newBall(currentLevel.getXStart(), currentLevel.getYStart());
-            }
-        }else if(help == 2){
-            if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
-                Thread.sleep(500);
-                help = 3;
-                currentLevel = level3;
-                lastCharacter = currentLevel.isBaseCharakter();
-                newCube(currentLevel.getXStart(), currentLevel.getYStart());
-            }
-        }else if(help == 3){
-            if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
-                Thread.sleep(500);
-                help = 4;
-                currentLevel = level4;
-                lastCharacter = currentLevel.isBaseCharakter();
-                newCube(currentLevel.getXStart(), currentLevel.getYStart());
-            }
-        }else {
-            if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
-                Thread.sleep(500);
-                lastCheckpoint = true;
-            }
+        switch (help){
+            case 1:
+                if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
+                    Thread.sleep(500);
+                    help = 2;
+                    currentLevel = level2;
+                    lastCharacter = currentLevel.baseCharakter;
+                    ball.setNormalGravity(true);
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                }
+            case 2:
+                if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
+                    Thread.sleep(500);
+                    help = 3;
+                    currentLevel = level3;
+                    lastCharacter = currentLevel.isBaseCharakter();
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }
+            case 3:
+                if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
+                    Thread.sleep(500);
+                    help = 4;
+                    currentLevel = level4;
+                    lastCharacter = currentLevel.isBaseCharakter();
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }
+            case 4:
+                if(cube.intersects(currentLevel.getCheckpoint()) || ball.intersects(currentLevel.getCheckpoint())) {
+                    Thread.sleep(500);
+                    lastCheckpoint = true;
+                }
         }
 
         //Cube
         if (lastCharacter) {
             if(cube.getKeyMap().get(KeyEvent.VK_A)){
-                cube.checkX(currentLevel.getBlocks(), -Cube.speed, 0);
+                cube.blockCollision(currentLevel.getBlocks(), -Cube.speed, 0);
             }
             if(cube.getKeyMap().get(KeyEvent.VK_D)){
-                cube.checkX(currentLevel.getBlocks(), Cube.speed, 0);
+                cube.blockCollision(currentLevel.getBlocks(), Cube.speed, 0);
             }
             if(cube.onGround(currentLevel.getBlocks()) && cube.getKeyMap().get(KeyEvent.VK_W)){
                 cube.setVelocityUp(14);
             }
             if(cube.getVelocityUp() > 0){
-                if(cube.checkX(currentLevel.getBlocks(), 0, -cube.getVelocityUp())){
+                if(cube.blockCollision(currentLevel.getBlocks(), 0, -cube.getVelocityUp())){
                     cube.setVelocityUp(0);
                 }else{
                     cube.setVelocityUp(cube.getVelocityUp()-1);
                 }
             }else{
-                cube.checkX(currentLevel.getBlocks(), 0, Cube.fallSpeed);
+                cube.blockCollision(currentLevel.getBlocks(), 0, Cube.fallSpeed);
             }
-            if(currentLevel.getBallPort() != null && cube.intersects(currentLevel.getBallPort())){
+            if(currentLevel.getBallPort() != null && cube.ballPortCollision(currentLevel.getBallPort())){
                 cube.getKeyMap().put(KeyEvent.VK_A, false);
                 cube.getKeyMap().put(KeyEvent.VK_D, false);
                 ball.setX(cube.x);
@@ -181,28 +174,32 @@ public class GamePanel extends JPanel implements Runnable{
                 ball.setNormalGravity(true);
                 lastCharacter = false;
             }
-            if (cube.x-10 >= GAME_WIDTH || cube.x+cube.width+10 <= 0 || cube.y-10 > GAME_HEIGHT || cube.y+cube.height+10 <= 0 ) {
-                newCube(currentLevel.getXStart(), currentLevel.getYStart());
+            if(!cube.inWindow()){
+                Thread.sleep(500);
+                lastCharacter = currentLevel.isBaseCharakter();
+                if(lastCharacter){
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }else {
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                }
             }
-            for(Spike spike: currentLevel.getSpikes()){
-                if(cube.intersects(spike)){
-                    Thread.sleep(500);
-                    lastCharacter = currentLevel.isBaseCharakter();
-                    if(lastCharacter){
-                        newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                    }else {
-                        newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                    }
+            if(cube.spikeCollision(currentLevel.getSpikes())){
+                Thread.sleep(500);
+                lastCharacter = currentLevel.isBaseCharakter();
+                if(lastCharacter){
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }else {
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
                 }
             }
 
         //Ball
         }else {
             if(ball.getKeyMap().get(KeyEvent.VK_A)){
-                ball.checkX(currentLevel.getBlocks(), -Ball.speed, 0);
+                ball.blockCollision(currentLevel.getBlocks(), -Ball.speed, 0);
             }
             if(ball.getKeyMap().get(KeyEvent.VK_D)){
-                ball.checkX(currentLevel.getBlocks(), Ball.speed, 0);
+                ball.blockCollision(currentLevel.getBlocks(), Ball.speed, 0);
             }
             if(ball.isNormalGravity()){
                 if(ball.onGround(currentLevel.getBlocks()) && ball.getKeyMap().get(KeyEvent.VK_W)){
@@ -215,31 +212,35 @@ public class GamePanel extends JPanel implements Runnable{
                     ball.getKeyMap().put(KeyEvent.VK_W, false);
                 }
             }
-            if(currentLevel.getCubePort() != null && ball.intersects(currentLevel.getCubePort())){
+            if(ball.isNormalGravity()){
+                ball.blockCollision(currentLevel.getBlocks(), 0, Ball.fallSpeed);
+
+            }else {
+                ball.blockCollision(currentLevel.getBlocks(), 0, -Ball.fallSpeed);
+            }
+            if(currentLevel.getCubePort() != null && ball.cubePortCollision(currentLevel.getCubePort())){
                 ball.getKeyMap().put(KeyEvent.VK_A, false);
                 ball.getKeyMap().put(KeyEvent.VK_D, false);
                 cube.setX(ball.x);
                 cube.setY(ball.y);
                 lastCharacter = true;
             }
-            if(ball.isNormalGravity()){
-                ball.checkX(currentLevel.getBlocks(), 0, Ball.fallSpeed);
-
-            }else {
-                ball.checkX(currentLevel.getBlocks(), 0, -Ball.fallSpeed);
+            if(!ball.inWindow()){
+                Thread.sleep(500);
+                lastCharacter = currentLevel.isBaseCharakter();
+                if(lastCharacter){
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }else {
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
+                }
             }
-            if (ball.x-10 >= GAME_WIDTH || ball.x+ball.width+10 <= 0 || ball.y-10 > GAME_HEIGHT || ball.y+ball.height+10 <= 0 ) {
-                newBall(currentLevel.getXStart(), currentLevel.getYStart());
-            }
-            for(Spike spike: currentLevel.getSpikes()){
-                if(ball.intersects(spike)){
-                    Thread.sleep(500);
-                    lastCharacter = currentLevel.isBaseCharakter();
-                    if(lastCharacter){
-                        newCube(currentLevel.getXStart(), currentLevel.getYStart());
-                    }else {
-                        newBall(currentLevel.getXStart(), currentLevel.getYStart());
-                    }
+            if (ball.spikeCollision(currentLevel.getSpikes())) {
+                Thread.sleep(500);
+                lastCharacter = currentLevel.isBaseCharakter();
+                if(lastCharacter){
+                    newCube(currentLevel.getXStart(), currentLevel.getYStart());
+                }else {
+                    newBall(currentLevel.getXStart(), currentLevel.getYStart());
                 }
             }
         }
@@ -250,8 +251,8 @@ public class GamePanel extends JPanel implements Runnable{
      * @param g - Graphics for painting
      */
     public void endScreen(Graphics g){
-        g.setColor(Color.RED);
-        Font font = new Font("MV Boli", Font.BOLD, 120);
+        g.setColor(Color.WHITE);
+        Font font = new Font("Calibri", Font.BOLD, 120);
         g.setFont(font);
         FontMetrics fontMetrics = getFontMetrics(font);
         g.drawString("YOU WIN!", (GAME_WIDTH - fontMetrics.stringWidth("YOU WIN!"))/2, GAME_HEIGHT/2 + 60);
@@ -260,6 +261,7 @@ public class GamePanel extends JPanel implements Runnable{
 
     /**
      * Game loop
+     * <a href="https://www.youtube.com/watch?v=oLirZqJFKPE&list=PLZPZq0r_RZOMhCAyywfnYLlrjiVOkdAI1&index=98">...</a>
      */
     public void run(){
         long lastTime = System.nanoTime();
@@ -283,9 +285,14 @@ public class GamePanel extends JPanel implements Runnable{
     }
 
     /**
-     *
+     * Inner class - Listens to keyboard
      */
     public class AL extends KeyAdapter {
+
+        /**
+         * Checks if player pressed key
+         * @param e the event to be processed
+         */
         public void keyPressed(KeyEvent e){
             if(lastCharacter){
                 cube.keyPressed(e);
@@ -293,18 +300,16 @@ public class GamePanel extends JPanel implements Runnable{
                 ball.keyPressed(e);
             }
         }
+
+        /**
+         * Checks if player released key
+         * @param e the event to be processed
+         */
         public void keyReleased(KeyEvent e) {
             if(lastCharacter){
                 cube.keyReleased(e);
             }else {
                 ball.keyReleased(e);
-            }
-        }
-        public void keyTyped(KeyEvent e) {
-            if (lastCharacter){
-                cube.keyTyped(e);
-            }else {
-                ball.keyTyped(e);
             }
         }
     }
