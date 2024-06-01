@@ -7,7 +7,6 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CubeTest {
 
-
     private Cube cube1 = new Cube(1000, 60); //false false
     private Cube cube2 = new Cube(900, 500); //true true
 
