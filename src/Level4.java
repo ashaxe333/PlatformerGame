@@ -8,6 +8,7 @@ public class Level4 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
+    private ArrayList<BallPort> ballPorts = new ArrayList<>();
 
     /**
      * Respawn x coordinate
@@ -19,7 +20,6 @@ public class Level4 extends Level{
      */
     private final int yStart = 100;
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*42+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*20);
-    private BallPort ballPort = new BallPort(GamePanel.UNIT_SIZE*57, GamePanel.UNIT_SIZE*17);
 
     /**
      * Respawn character (cube)
@@ -34,11 +34,14 @@ public class Level4 extends Level{
     public ArrayList<Spike> getSpikes() {
         return spikes;
     }
+
+    @Override
+    public ArrayList<BallPort> getBallPorts() {
+        return ballPorts;
+    }
+
     public Checkpoint getCheckpoint() {
         return checkpoint;
-    }
-    public BallPort getBallPort() {
-        return ballPort;
     }
     public int getXStart() {return xStart;}
     public int getYStart() {return yStart;}
@@ -110,17 +113,26 @@ public class Level4 extends Level{
     }
 
     /**
+     * Creates all ports of the level
+     */
+    public void createPorts(){
+        ballPorts.add(new BallPort(GamePanel.UNIT_SIZE*57, GamePanel.UNIT_SIZE*17));
+    }
+
+    /**
      * Paints blocks and spikes, checkpoint and ballPort
      * @param g - Graphics for painting
      */
     public void draw(Graphics g){
         checkpoint.draw(g);
-        ballPort.draw(g);
         for(Block b: blocks){
             b.draw(g);
         }
         for (Spike s: spikes){
             s.draw(g);
+        }
+        for (BallPort bp: ballPorts) {
+            bp.draw(g);
         }
     }
 }

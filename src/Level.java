@@ -13,6 +13,8 @@ public class Level{
     private Checkpoint checkpoint;
     private CubePort cubePort;
     private BallPort ballPort;
+    private ArrayList<CubePort> cubePorts = new ArrayList<>();
+    private ArrayList<BallPort> ballPorts = new ArrayList<>();
     boolean baseCharakter;
 
     public Level() {}
@@ -26,16 +28,14 @@ public class Level{
     public Checkpoint getCheckpoint() {
         return checkpoint;
     }
-    public CubePort getCubePort() {
-        return cubePort;
-    }
-    public BallPort getBallPort() {return ballPort;}
+    public ArrayList<CubePort> getCubePorts() {return cubePorts;}
+    public ArrayList<BallPort> getBallPorts() {return ballPorts;}
     public boolean isBaseCharakter() {return baseCharakter;}
-
     public int getXStart() {return xStart;}
     public int getYStart() {return yStart;}
     public void createBlocks(){}
     public void createSpikes(){}
+    public void createPorts(){}
     public void draw(Graphics g){}
 
 

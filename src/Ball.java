@@ -134,14 +134,20 @@ public class Ball extends Rectangle implements KeyListener {
 
     /**
      * Checks if ball touches cubePort of current level
-     * @param cubePort - CubePort of current level
+     * @param cubePorts - CubePort of current level
      * @return - boolean if ball touched ballPort
      */
-    public boolean cubePortCollision(CubePort cubePort){
-        if(this.intersects(cubePort)){
-            return true;
+    public boolean cubePortCollision(ArrayList<CubePort> cubePorts){
+        boolean x = false;
+        if(cubePorts.isEmpty()){
+        }else {
+            for (CubePort cubePort: cubePorts) {
+                if(this.intersects(cubePort)){
+                    x = true;
+                }
+            }
         }
-        return false;
+        return x;
     }
 
     /**

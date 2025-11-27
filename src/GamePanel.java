@@ -26,6 +26,8 @@ public class GamePanel extends JPanel implements Runnable{
     private int help = 1;
     private boolean lastCheckpoint = false;
 
+    private volatile long levelTime = 0;    //update!
+
     /**
      * Creates Game Panel, all levels and endscreen and starts game thread
      */
@@ -38,6 +40,8 @@ public class GamePanel extends JPanel implements Runnable{
         level2.createSpikes();
         level3.createSpikes();
         level4.createSpikes();
+        level3.createPorts();
+        level4.createPorts();
         newCube(level1.getXStart(), level1.getYStart());
         newBall(cube.x, cube.y);
         currentLevel = level1;
@@ -49,6 +53,10 @@ public class GamePanel extends JPanel implements Runnable{
 
         gameThread = new Thread(this);
         gameThread.start();
+
+        Thread timerThread = new Thread(new TimerTask());   //update!
+        timerThread.start();
+
     }
 
     /**
@@ -96,6 +104,12 @@ public class GamePanel extends JPanel implements Runnable{
             endScreen(g);
         }
 
+        //update!
+        g.setColor(Color.WHITE);
+        g.setFont(new Font("Calibri", Font.PLAIN, 20));
+        g.drawString("Time: " + (levelTime / 1000.0) + "s", 20, 30);
+
+
 /*
         //effect
         Random random = new Random();
@@ -106,7 +120,6 @@ public class GamePanel extends JPanel implements Runnable{
             g2D.drawLine(0, i*UNIT_SIZE*2-(random.nextInt(21)-10), GAME_WIDTH, i*UNIT_SIZE*2-(random.nextInt(21)-10));
         }
 */
-
     }
 
     /**
@@ -166,7 +179,7 @@ public class GamePanel extends JPanel implements Runnable{
             }else{
                 cube.blockCollision(currentLevel.getBlocks(), 0, Cube.fallSpeed);
             }
-            if(currentLevel.getBallPort() != null && cube.ballPortCollision(currentLevel.getBallPort())){
+            if(cube.ballPortCollision(currentLevel.getBallPorts())){
                 cube.getKeyMap().put(KeyEvent.VK_A, false);
                 cube.getKeyMap().put(KeyEvent.VK_D, false);
                 ball.setX(cube.x);
@@ -218,7 +231,8 @@ public class GamePanel extends JPanel implements Runnable{
             }else {
                 ball.blockCollision(currentLevel.getBlocks(), 0, -Ball.fallSpeed);
             }
-            if(currentLevel.getCubePort() != null && ball.cubePortCollision(currentLevel.getCubePort())){
+
+            if(ball.cubePortCollision(currentLevel.getCubePorts())){
                 ball.getKeyMap().put(KeyEvent.VK_A, false);
                 ball.getKeyMap().put(KeyEvent.VK_D, false);
                 cube.setX(ball.x);
@@ -256,8 +270,13 @@ public class GamePanel extends JPanel implements Runnable{
         g.setFont(font);
         FontMetrics fontMetrics = getFontMetrics(font);
         g.drawString("YOU WIN!", (GAME_WIDTH - fontMetrics.stringWidth("YOU WIN!"))/2, GAME_HEIGHT/2 + 60);
-    }
 
+        //update!
+        g.setFont(new Font("Calibri", Font.BOLD, 40));
+        g.drawString("Time: " + (levelTime / 1000.0) + " seconds",
+                (GAME_WIDTH - 350)/2,
+                GAME_HEIGHT/2 + 130);
+    }
 
     /**
      * Game loop
@@ -313,4 +332,20 @@ public class GamePanel extends JPanel implements Runnable{
             }
         }
     }
+
+    private class TimerTask implements Runnable {
+        @Override
+        public void run() {
+            long last = System.currentTimeMillis();
+
+            while (!lastCheckpoint) {
+                long now = System.currentTimeMillis();
+                long delta = now - last;
+                last = now;
+
+                levelTime += delta;
+            }
+        }
+    }
+
 }

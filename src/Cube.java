@@ -137,14 +137,20 @@ public class Cube extends Rectangle implements KeyListener {
 
     /**
      * Checks if cube touches ballPort of current level
-     * @param ballPort - BallPort of current level
+     * @param ballPorts - ballPort ArrayList of current level
      * @return - boolean if cube touched ballPort
      */
-    public boolean ballPortCollision(BallPort ballPort){
-        if(this.intersects(ballPort)){
-            return true;
+    public boolean ballPortCollision(ArrayList<BallPort> ballPorts){
+        boolean x = false;
+        if(ballPorts.isEmpty()){
+        }else {
+            for (BallPort ballPort: ballPorts) {
+                if(this.intersects(ballPort)){
+                    x = true;
+                }
+            }
         }
-        return false;
+        return x;
     }
 
     /**

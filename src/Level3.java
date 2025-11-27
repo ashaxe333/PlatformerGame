@@ -8,6 +8,8 @@ public class Level3 extends Level{
 
     private ArrayList<Block> blocks = new ArrayList<>();
     private ArrayList<Spike> spikes = new ArrayList<>();
+    private ArrayList<BallPort> ballPorts = new ArrayList<>();
+    private ArrayList<CubePort> cubePorts = new ArrayList<>();
 
     /**
      * Respawn x coordinate
@@ -19,8 +21,6 @@ public class Level3 extends Level{
      */
     private final int yStart = 500;
     private Checkpoint checkpoint = new Checkpoint(GamePanel.UNIT_SIZE*39+GamePanel.UNIT_SIZE/2, GamePanel.UNIT_SIZE*9);
-    private BallPort ballPort = new BallPort(200, 460);
-    private CubePort cubePort = new CubePort(340, 300);
 
     /**
      * Respawn character (cube)
@@ -43,12 +43,17 @@ public class Level3 extends Level{
     public int getYStart() {
         return yStart;
     }
-    public BallPort getBallPort() {
-        return ballPort;
+
+    @Override
+    public ArrayList<BallPort> getBallPorts() {
+        return ballPorts;
     }
-    public CubePort getCubePort() {
-        return cubePort;
+
+    @Override
+    public ArrayList<CubePort> getCubePorts() {
+        return cubePorts;
     }
+
     public boolean isBaseCharakter() {
         return baseCharakter;
     }
@@ -131,18 +136,30 @@ public class Level3 extends Level{
     }
 
     /**
-     * Paints blocks and spikes, checkpoint and cubePort with ballPort
+     * Creates all ports of the level
+     */
+    public void createPorts(){
+        cubePorts.add(new CubePort(340, 300));
+        ballPorts.add(new BallPort(200, 460));
+    }
+
+    /**
+     * Paints blocks and spikes, checkpoint and cubePorts with ballPorts
      * @param g - Graphics for painting
      */
     public void draw(Graphics g){
         checkpoint.draw(g);
-        ballPort.draw(g);
-        cubePort.draw(g);
         for(Block b: blocks){
             b.draw(g);
         }
         for (Spike s: spikes){
             s.draw(g);
+        }
+        for (BallPort bp: ballPorts) {
+            bp.draw(g);
+        }
+        for (CubePort cp: cubePorts) {
+            cp.draw(g);
         }
     }
 }
