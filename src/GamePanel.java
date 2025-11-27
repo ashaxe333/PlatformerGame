@@ -333,7 +333,13 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
+    /**
+     * new second thread
+     */
     private class TimerTask implements Runnable {
+        /**
+         * thread measures time
+         */
         @Override
         public void run() {
             long last = System.currentTimeMillis();
